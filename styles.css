@@ -1,0 +1,626 @@
+/* ============================== */
+/* VARIABLES DE COLOR            */
+/* ============================== */
+:root {
+  --color-bg: #f5f3ff;
+  --color-header: #5b5f97;
+  --color-accent: #5b5f97;
+  --color-danger: #ffadad;
+  --color-danger-hover: #ff6b6b;
+  --color-hover: #ece9f1;
+  --color-list-bg: #ffffff;
+  --color-list-hover: #f0f4ff;
+  --color-table-border: #e0e0e0;
+  --color-table-header: #5b5f97;
+  --shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================== */
+/* BASE                          */
+/* ============================== */
+body {
+  font-family: 'Rubik', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text, #222);
+  margin: 0;
+  padding: 0;
+  animation: fadeInBody 0.5s ease-in;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ============================== */
+/* MODO OSCURO                   */
+/* ============================== */
+body.dark {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+body.dark .section-box {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+body.dark .interactive-list li {
+  background-color: #2c2c2c;
+}
+
+body.dark .interactive-list li:hover {
+  background-color: #3a3a3a;
+}
+
+body.dark thead tr {
+  background-color: #333;
+}
+
+body.dark tbody tr {
+  background-color: #1e1e1e;
+}
+
+body.dark tbody tr:hover {
+  background-color: #2a2a2a;
+}
+
+body.dark form input,
+body.dark form select {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+  border: 1px solid #444;
+}
+
+body.dark form button {
+  background-color: #5b5f97;
+}
+
+body.dark form button:hover {
+  background-color: #3d4090;
+}
+
+body.dark .boton-estetico {
+  background-color: #c66;
+}
+
+body.dark .boton-estetico:hover {
+  background-color: #a33;
+}
+
+body.dark #theme-icon {
+  color: #00bcd4;
+}
+
+/* Tipografía negra para las materias (celdas del cuerpo) en modo oscuro */
+body.dark #horario tbody td {
+  color: #000;
+}
+
+/* Tipografía blanca para los días de la semana (cabecera) en modo oscuro */
+body.dark #horario thead th {
+  color: #fff;
+}
+
+
+/* ============================== */
+/* HEADER                        */
+/* ============================== */
+header.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--color-header);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ============================== */
+/* MENÚ                          */
+/* ============================== */
+nav .menu-toggle {
+  background: none;
+  color: white;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  display: none; /* Oculto por defecto en escritorio */
+}
+
+.menu-list {
+  list-style: none;
+  display: flex; /* Menú horizontal para escritorio */
+  gap: 1.2rem;
+  padding: 0;
+  margin: 0;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.menu-list li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.menu-list li a:hover {
+  color: var(--color-accent);
+}
+
+/* Media query para dispositivos más pequeños (móviles y tablets) */
+@media (max-width: 768px) {
+  header.main-header {
+    flex-direction: column; /* Apila el título y el menú en pantallas pequeñas */
+    align-items: flex-start;
+    padding: 1rem; /* Reduce el padding para pantallas pequeñas */
+  }
+
+  header.main-header h1 {
+    margin-bottom: 0.5rem; /* Espacio entre el título y el menú/botones */
+  }
+
+  .header-right {
+    width: 100%; /* El contenedor del menú y el botón de tema ocupa todo el ancho */
+    justify-content: space-between; /* Espacia el menú toggle y el botón de tema */
+  }
+
+  nav .menu-toggle {
+    display: block; /* Muestra el botón de hamburguesa */
+    font-size: 2rem; /* Hazlo un poco más grande para ser más fácil de tocar */
+  }
+
+  .menu-list {
+    flex-direction: column; /* Apila los elementos del menú */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    position: absolute; /* Permite que el menú se superponga al contenido */
+    background-color: var(--color-header); /* Fondo para el menú desplegable */
+    top: 100%; /* Debajo del header */
+    left: 0;
+    box-shadow: var(--shadow-soft);
+    border-radius: 0 0 8px 8px; /* Esquinas redondeadas solo abajo */
+    padding: 0 1rem; /* Padding interno */
+  }
+
+  .menu-list.show {
+    max-height: 300px; /* Suficientemente alto para mostrar todos los elementos */
+    opacity: 1;
+    padding: 1rem; /* Asegúrate de que el padding se aplique cuando esté visible */
+  }
+
+  .menu-list li {
+    width: 100%; /* Cada ítem del menú ocupa el ancho completo */
+    padding: 0.5rem 0; /* Más espacio vertical entre ítems */
+  }
+
+  .menu-list li a {
+    display: block; /* Para que el enlace sea clicable en todo el área del ítem */
+    padding: 0.5rem 0;
+  }
+}
+
+
+/* ============================== */
+/* CONTENEDOR GENERAL            */
+/* ============================== */
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Media query para el contenedor general en pantallas pequeñas */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem; /* Reduce el padding general para móviles */
+  }
+}
+
+/* ============================== */
+/* SECCIONES                     */
+/* ============================== */
+.section-box {
+  background-color: white;
+  border-radius: 14px;
+  box-shadow: var(--shadow-soft);
+  padding: 1.8rem;
+  margin-bottom: 2rem;
+  animation: fadeSlideIn 0.6s ease both;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.section-box:hover,
+.boton-principal:hover,
+.boton-estetico:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.top-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+#hoy.section-box {
+  flex: 0 0 30%;
+  min-width: 250px;
+}
+
+#horario.section-box {
+  flex: 1;
+}
+
+/* Media query para apilar las secciones en pantallas pequeñas */
+@media (max-width: 768px) {
+  .top-sections {
+    flex-direction: column; /* Apila las secciones verticalmente */
+    gap: 1.5rem; /* Reduce el espacio entre ellas */
+  }
+
+  #hoy.section-box,
+  #horario.section-box,
+  .bottom-sections section { /* También aplica a las secciones de abajo */
+    flex: 0 0 100%; /* Cada sección ocupa el ancho completo */
+    min-width: unset; /* Elimina la restricción de ancho mínimo si existe */
+    padding: 1.2rem; /* Reduce el padding interno de las cajas */
+  }
+
+  .section-box h2 {
+    font-size: 1.6rem; /* Ajusta el tamaño de los títulos de sección */
+  }
+}
+
+/* ============================== */
+/* LISTAS INTERACTIVAS           */
+/* ============================== */
+.interactive-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
+}
+
+.interactive-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  background-color: var(--color-list-bg);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+.interactive-list li:hover {
+  background-color: var(--color-list-hover);
+}
+
+.interactive-list input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.interactive-list input[type="checkbox"]:checked {
+  transform: scale(1.2);
+}
+
+.interactive-list input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+  color: #9ca3af;
+  opacity: 0.8;
+}
+
+/* ============================== */
+/* TABLA DE HORARIO              */
+/* ============================== */
+/* Contenedor para scroll horizontal en móviles */
+.table-container {
+  overflow-x: auto; /* Permite el desplazamiento horizontal */
+  -webkit-overflow-scrolling: touch; /* Suaviza el desplazamiento en iOS */
+  border-radius: 12px; /* Aplica el borde al contenedor para que el scroll no corte el borde */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Mueve la sombra aquí para que se aplique al contenedor */
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 1rem;
+  font-family: 'Rubik', sans-serif;
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 600px; /* Asegura que la tabla no se haga demasiado pequeña en móvil y permita scroll */
+}
+
+thead tr {
+  background-color: var(--color-table-header);
+  color: white;
+  font-weight: 600;
+}
+
+thead th,
+tbody td {
+  padding: 1rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+tbody tr {
+  background-color: white;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: var(--color-hover);
+}
+
+tbody td {
+  border-right: 1px solid var(--color-table-border);
+}
+
+tbody td:last-child {
+  border-right: none;
+}
+
+tbody tr:first-child td:first-child { border-top-left-radius: 12px; }
+tbody tr:first-child td:last-child { border-top-right-radius: 12px; }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
+
+/* Colores por materia */
+
+.matematicas { background-color: #c3f7c9a4; }
+
+.filosofia  { background-color: #ffe0b2ad; }
+
+.ingles { background-color: #bfdbfe9f; }
+
+.geografia { background-color: #f3e8ffa8; }
+
+.literatura { background-color: #ffe4e6ad; }
+
+.historia { background-color: #fef08a9a; }
+
+.arte { background-color: #b2dfdbad; }
+
+.trabajo  { background-color: #ffcccb9f; }
+
+.proyecto { background-color: #d1c4e9ab; }
+
+.catequesis { background-color: #e6ee9c86; }
+
+
+/* Media query para ajustar la tabla en pantallas más pequeñas */
+@media (max-width: 600px) {
+  table {
+    font-size: 0.85rem; /* Reduce el tamaño de fuente para caber más */
+  }
+
+  thead th,
+  tbody td {
+    padding: 0.7rem; /* Reduce el padding en las celdas */
+  }
+}
+
+/* ============================== */
+/* FORMULARIO                    */
+/* ============================== */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+form input,
+form select {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 1px solid var(--color-table-border);
+  border-radius: 8px;
+  flex: 1 1 auto;
+  min-width: 150px; /* Asegura que no se hagan demasiado pequeños en escritorio */
+}
+
+form button {
+  padding: 0.6rem;
+  font-size: 1rem;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #1e40af;
+}
+
+/* Media queries para los formularios (solo en móvil) */
+@media (max-width: 600px) {
+  form {
+    flex-direction: column; /* Apila los elementos del formulario */
+    gap: 1rem; /* Más espacio entre elementos apilados */
+  }
+
+  form label {
+    margin-bottom: -0.5rem; /* Ajusta el espacio de la etiqueta */
+    font-size: 0.95rem;
+  }
+
+  form input,
+  form select,
+  form button {
+    width: 100%; /* Ocupa el ancho completo */
+    flex: none; /* Desactiva el flex-grow/shrink */
+    box-sizing: border-box; /* Incluye padding y borde en el ancho */
+  }
+}
+
+/* ============================== */
+/* CLIMA                         */
+/* ============================== */
+#weather {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1rem;
+  color: white;
+}
+
+#weather img {
+  width: 26px;
+  height: 26px;
+}
+
+/* ============================== */
+/* BOTONES                       */
+/* ============================== */
+.boton-estetico,
+.boton-principal {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: var(--shadow-soft);
+}
+
+.boton-estetico {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.boton-estetico:hover {
+  background-color: var(--color-danger-hover);
+}
+
+.boton-principal {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.boton-principal:hover {
+  background-color: #1e40af;
+}
+
+.boton-principal.eliminar {
+  background-color: var(--color-danger);
+}
+
+.boton-principal.eliminar:hover {
+  background-color: var(--color-danger-hover);
+}
+
+.boton-principal:active,
+.boton-estetico:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+/* ============================== */
+/* ANIMACIONES                   */
+/* ============================== */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInBody {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ============================== */
+/* HEADER RIGHT                  */
+/* ============================== */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ============================== */
+/* BOTÓN DE TEMA                 */
+/* ============================== */
+#theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+#theme-toggle:hover {
+  transform: rotate(20deg);
+}
+
+#theme-icon {
+  color: #ffcc00;
+  transition: color 0.4s ease;
+}
+
+
+/* ============================== */
+/* TOOLTIP                       */
+/* ============================== */
+#tooltip {
+  position: fixed;
+  background-color: #333;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  z-index: 2000;
+  max-width: 260px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+body.dark #tooltip {
+  background-color: #222;
+  color: #eee;
+  }
+
+  /* ============================== */
+/* TOOLTIP FLOATANTE             */
+/* ============================== */
+.tooltip {
+  position: fixed;
+  z-index: 9999;
+  padding: 8px 12px;
+  background-color: rgba(60, 60, 60, 0.95);
+  color: white;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  max-width: 220px;
+  white-space: pre-line;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip.show {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head> 
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Journaly - Tu organizador escolar</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <script defer src="script.js"></script>
+</head>
+<body>
+<header class="main-header">
+  <h1>
+    Journaly <span id="weather" style="font-size: 1rem; margin-left: 10px;"></span>
+  </h1>
+  <div class="header-right">
+    <nav id="menu" aria-label="Menú principal">
+      <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      <ul class="menu-list">
+        <li><a href="#hoy" aria-label="Ir a la sección de Hoy">Hoy</a></li>
+        <li><a href="#tareas" aria-label="Ir a la sección de Tareas">Tareas</a></li>
+        <li><a href="#notas" aria-label="Ir a la sección de Notas">Notas</a></li>
+        <li><a href="#examenes" aria-label="Ir a la sección de Exámenes">Exámenes</a></li>
+        <li><a href="#horario" aria-label="Ir a la sección de Horario">Horario</a></li>
+      </ul>
+    </nav>
+    <button id="theme-toggle" aria-label="Cambiar tema">
+      <i id="theme-icon" class="fas fa-moon"></i>
+    </button>
+  </div>
+</header>
+
+<main class="container">
+  <div class="top-sections">
+    <section id="hoy" class="section-box">
+      <h2 id="tituloHoy">Hoy - <span id="fechaHoy"></span></h2>
+      <ul id="listaHoy" class="interactive-list" role="list"></ul>
+    </section>
+
+    <section id="horario" class="section-box">
+      <h2>Horario Escolar</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Lunes</th>
+              <th>Martes</th>
+              <th>Miércoles</th>
+              <th>Jueves</th>
+              <th>Viernes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="matematicas" data-materia="matematicas">Matemáticas</td>
+              <td class="filosofia" data-materia="filosofia">Filosofía</td>
+              <td class="ingles" data-materia="ingles">Inglés</td>
+              <td class="geografia" data-materia="geografia">Geografía</td>
+              <td class="literatura" data-materia="literatura">Literatura</td>
+            </tr>
+            <tr>
+              <td class="matematicas" data-materia="matematicas">Matemáticas</td>
+              <td class="filosofia" data-materia="filosofia">Filosofía</td>
+              <td class="historia" data-materia="historia">Historia</td>
+              <td class="geografia" data-materia="geografia">Geografía</td>
+              <td class="literatura" data-materia="literatura">Literatura</td>
+            </tr>
+            <tr>
+              <td class="arte" data-materia="arte">Arte</td>
+              <td class="trabajo" data-materia="Trabajo y Ciudadanía">Trabajo</td>
+              <td class="historia" data-materia="historia">Historia</td>
+              <td class="ingles" data-materia="ingles">Inglés</td>
+              <td class="matematicas" data-materia="matematicas">Matemáticas</td>
+            </tr>
+            <tr>
+              <td class="arte" data-materia="arte">Arte</td>
+              <td class="trabajo" data-materia="Trabajo y Ciudadanía">Trabajo</td>
+              <td class="proyecto" data-materia="proyecto">Proyecto</td>
+              <td class="catequesis" data-materia="catequesis">Catequesis</td>
+              <td class="matematicas" data-materia="matematicas">Matemáticas</td>
+            </tr>
+            <tr>
+              <td class="proyecto" data-materia="proyecto">Proyecto</td>
+              <td class="proyecto" data-materia="proyecto">Proyecto</td>
+              <td class="literatura" data-materia="literatura">Literatura</td>
+              <td class="proyecto" data-materia="proyecto">Proyecto</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <div class="bottom-sections">
+    <section id="tareas" class="section-box">
+      <h2>Tareas</h2>
+      <form id="formTarea">
+        <label for="materiaSelect">Materia:</label>
+        <select id="materiaSelect" required>
+          <option value="" disabled selected>Seleccionar materia</option>
+          <optgroup label="Materias principales">
+            <option value="matematicas">Matemáticas</option>
+            <option value="filosofia">Filosofía</option>
+            <option value="ingles">Inglés</option>
+            <option value="historia">Historia</option>
+            <option value="literatura">Literatura</option>
+            <option value="geografia">Geografía</option>
+          </optgroup>
+          <optgroup label="Otras materias">
+            <option value="arte">Arte</option>
+            <option value="proyecto">Proyecto</option>
+            <option value="Trabajo y Ciudadanía">Trabajo y Ciudadanía</option>
+            <option value="catequesis">Catequesis</option>
+          </optgroup>
+        </select>
+        <label for="inputTarea">Tarea:</label>
+        <input type="text" id="inputTarea" placeholder="Agregar tarea..." required autocomplete="off" />
+        <button type="submit" class="boton-agregar">Agregar</button>
+        <button type="button" id="btnEliminarTareas" class="boton-eliminar">Eliminar realizadas</button>
+      </form>
+      <ul id="listaTareas" class="interactive-list" role="list"></ul>
+    </section>
+
+    <section id="notas" class="section-box">
+      <h2>Notas</h2>
+      <form id="formNota">
+        <label for="materiaNota">Materia:</label>
+        <select id="materiaNota" required>
+          <option value="" disabled selected>Seleccionar materia</option>
+          <optgroup label="Materias principales">
+            <option value="matematicas">Matemáticas</option>
+            <option value="filosofia">Filosofía</option>
+            <option value="ingles">Inglés</option>
+            <option value="historia">Historia</option>
+            <option value="literatura">Literatura</option>
+            <option value="geografia">Geografía</option>
+          </optgroup>
+          <optgroup label="Otras materias">
+            <option value="arte">Arte</option>
+            <option value="proyecto">Proyecto</option>
+            <option value="Trabajo y Ciudadanía">Trabajo y Ciudadanía</option>
+            <option value="catequesis">Catequesis</option>
+          </optgroup>
+        </select>
+        <label for="inputNota">Nota:</label>
+        <input type="text" id="inputNota" placeholder="Escribe tu nota" required autocomplete="off">
+        <label for="fechaNota">Fecha:</label>
+        <input type="date" id="fechaNota">
+        <button type="submit" class="boton-agregar">Agregar</button>
+        <button type="button" id="btnEliminarNotas" class="boton-eliminar">Eliminar seleccionadas</button>
+      </form>
+      <ul id="listaNotas" class="interactive-list" role="list"></ul>
+    </section>
+
+    <section id="examenes" class="section-box">
+      <h2>Exámenes</h2>
+      <form id="formExamen">
+        <label for="materiaExamen">Materia:</label>
+        <select id="materiaExamen" required>
+          <option value="" disabled selected>Seleccionar materia</option>
+          <optgroup label="Materias principales">
+            <option value="matematicas">Matemáticas</option>
+            <option value="filosofia">Filosofía</option>
+            <option value="ingles">Inglés</option>
+            <option value="historia">Historia</option>
+            <option value="literatura">Literatura</option>
+            <option value="geografia">Geografía</option>
+          </optgroup>
+          <optgroup label="Otras materias">
+            <option value="arte">Arte</option>
+            <option value="proyecto">Proyecto</option>
+            <option value="Trabajo y Ciudadanía">Trabajo y Ciudadanía</option>
+            <option value="catequesis">Catequesis</option>
+          </optgroup>
+        </select>
+        <label for="inputExamen">Tema:</label>
+        <input type="text" id="inputExamen" placeholder="Tema del examen..." required autocomplete="off">
+        <label for="fechaExamen">Fecha:</label>
+        <input type="date" id="fechaExamen" required>
+        <button type="submit" class="boton-agregar">Agregar</button>
+      </form>
+      <ul id="listaExamenes" class="interactive-list" role="list"></ul>
+    </section>
+  </div>
+</main>
+
+<div id="tooltip"></div>
+</body>
+</html>
