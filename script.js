@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     listaNotas?.addEventListener('change', guardarNotas);
     cargarNotas();
 
-    // --- TAREAS ---
+// --- TAREAS ---
     const formTarea = document.getElementById('formTarea');
     const listaTareas = document.getElementById('listaTareas');
     const btnEliminarTareas = document.getElementById('btnEliminarTareas');
@@ -178,10 +178,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     formTarea?.addEventListener('submit', e => {
         e.preventDefault();
-        const materia = formTarea.materiaSelect.value;
+        // --- CAMBIO AQUÍ ---
+        const materiaSelectElement = formTarea.materiaSelect; // Obtener el elemento <select>
+        const selectedOption = materiaSelectElement.options[materiaSelectElement.selectedIndex];
+        const materiaParaMostrar = selectedOption.textContent; // <--- ¡Esto es lo que necesitas!
+
         const texto = formTarea.inputTarea.value.trim();
-        if (!materia || !texto || texto.length > MAX_TAREA_LENGTH) return;
-        listaTareas?.appendChild(crearTareaElemento(materia, texto));
+        if (!materiaParaMostrar || !texto || texto.length > MAX_TAREA_LENGTH) return;
+        
+        listaTareas?.appendChild(crearTareaElemento(materiaParaMostrar, texto)); // Usar la materia con el texto correcto
         guardarTareas();
         formTarea.reset();
     });
@@ -194,6 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     listaTareas?.addEventListener('change', guardarTareas);
     cargarTareas();
+
+    // ... el resto de tu código ...
 
     // --- EXÁMENES ---
     const formExamen = document.getElementById('formExamen');
