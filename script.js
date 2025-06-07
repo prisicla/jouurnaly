@@ -178,10 +178,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     formTarea?.addEventListener('submit', e => {
         e.preventDefault();
-        // --- CAMBIO AQUÍ ---
+        // --- INICIO DEL CAMBIO QUE DEBES APLICAR ---
         const materiaSelectElement = formTarea.materiaSelect; // Obtener el elemento <select>
-        const selectedOption = materiaSelectElement.options[materiaSelectElement.selectedIndex];
-        const materiaParaMostrar = selectedOption.textContent; // <--- ¡Esto es lo que necesitas!
+        const materiaParaMostrar = materiaSelectElement.options[materiaSelectElement.selectedIndex].textContent; // <--- ¡Esta es la línea clave!
+        // --- FIN DEL CAMBIO ---
 
         const texto = formTarea.inputTarea.value.trim();
         if (!materiaParaMostrar || !texto || texto.length > MAX_TAREA_LENGTH) return;
@@ -199,9 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     listaTareas?.addEventListener('change', guardarTareas);
     cargarTareas();
-
-    // ... el resto de tu código ...
-
+    
     // --- EXÁMENES ---
     const formExamen = document.getElementById('formExamen');
     const listaExamenes = document.getElementById('listaExamenes');
