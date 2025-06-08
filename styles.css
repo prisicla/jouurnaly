@@ -145,30 +145,15 @@ header.main-header h1 {
     font-size: 2rem; /* Mantén tu tamaño de fuente actual */
     font-weight: bold; /* Mantén tu peso de fuente actual */
     color: white; /* Color inicial del texto */
-    position: relative; /* Necesario para el pseudo-elemento del subrayado */
-    padding-bottom: 5px; /* Espacio para el subrayado */
-    transition: color 0.3s ease; /* Solo transiciona el color del texto si cambia, no el transform */
+    transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease; /* Transiciones suaves para la animación */
     cursor: pointer; /* Cambia el cursor a una mano al pasar por encima */
 }
 
-/* Pseudo-elemento para el subrayado */
-header.main-header h1::after {
-    content: '';
-    position: absolute;
-    left: 50%; /* Inicia en el centro */
-    bottom: 0;
-    width: 0%; /* Inicialmente sin ancho */
-    height: 2px; /* Grosor del subrayado */
-    background-color: var(--color-accent); /* Color del subrayado */
-    transform: translateX(-50%); /* Centra el pseudo-elemento */
-    transition: width 0.3s ease-out; /* Animación del ancho */
+header.main-header h1:hover {
+    transform: translateY(-3px) scale(1.02); /* Se eleva ligeramente y crece un poco */
+    color: var(--color-accent); /* Cambia al color de acento */
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3); /* Sombra suave para un efecto de "brillo" */
 }
-
-/* Animación del subrayado al pasar el cursor */
-header.main-header h1:hover::after {
-    width: 100%; /* El ancho llega al 100% al hacer hover */
-}
-
 
 /* ============================== */
 /* MENÚ                           */
