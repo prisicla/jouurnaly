@@ -4,17 +4,18 @@
 :root {
     --color-bg: #f5f3ff;
     --color-header: #5b5f97;
-    --color-accent: #5b5f97; /* Tu color principal para botones de agregar */
+    --color-accent: #5b5f97;
     --color-danger: #ffadad;
-    --color-danger-hover: #ff6b6b; /* Un rojo más fuerte para el hover de eliminar */
+    --color-danger-hover: #ff6b6b;
     --color-hover: #ece9f1;
     --color-list-bg: #ffffff;
     --color-list-hover: #f0f4ff;
     --color-table-border: #e0e0e0;
     --color-table-header: #5b5f97;
     --shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.05);
-    --button-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para los botones */
-    --button-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra al pasar el ratón */
+    /* Nuevas variables para la sombra de los botones */
+    --button-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --button-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* ============================== */
@@ -70,7 +71,16 @@ body.dark form select {
     border: 1px solid #444;
 }
 
-/* Ajustes para los nuevos botones en modo oscuro */
+/* Mantenemos el estilo original de los botones de formulario en modo oscuro para evitar conflictos */
+body.dark form button {
+    background-color: #5b5f97;
+}
+
+body.dark form button:hover {
+    background-color: #3d4090;
+}
+
+/* Estilos para los nuevos botones en modo oscuro */
 body.dark .boton-agregar {
     background-color: var(--color-accent); /* Mantiene tu color principal */
     color: white;
@@ -89,6 +99,14 @@ body.dark .boton-eliminar:hover {
     background-color: #a72f27; /* Rojo aún más oscuro al hover */
 }
 
+
+body.dark .boton-estetico {
+    background-color: #c66;
+}
+
+body.dark .boton-estetico:hover {
+    background-color: #a33;
+}
 
 body.dark #theme-icon {
     color: #00bcd4;
@@ -237,7 +255,7 @@ nav .menu-toggle {
     transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-.section-box:hover { /* Solo la caja de sección, no los botones que ya tienen su propio hover */
+.section-box:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
@@ -374,21 +392,16 @@ tbody td:last-child {
     border-right: none;
 }
 
-/* Estas reglas de border-radius son para la tabla, pero podrían causar un pequeño problema
-   si la tabla tiene scroll y el contenedor tiene border-radius. Si ves esquinas
-   cortadas, considera aplicar el border-radius solo al .table-container y no a la tabla misma,
-   o ajustar el overflow en la tabla si es necesario. */
-/* tbody tr:first-child td:first-child { border-top-left-radius: 12px; } */
-/* tbody tr:first-child td:last-child { border-top-right-radius: 12px; } */
-/* tbody tr:last-child td:first-child { border-bottom-left-radius: 12px; } */
-/* tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; } */
-
+tbody tr:first-child td:first-child { border-top-left-radius: 12px; }
+tbody tr:first-child td:last-child { border-top-right-radius: 12px; }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
 
 /* Colores por materia */
 
 .matematicas { background-color: #c3f7c9a4; }
 
-.filosofia  { background-color: #ffe0b2ad; }
+.filosofia { background-color: #ffe0b2ad; }
 
 .ingles { background-color: #bfdbfe9f; }
 
@@ -400,7 +413,7 @@ tbody td:last-child {
 
 .arte { background-color: #b2dfdbad; }
 
-.Trabajo-y-Ciudadania  { background-color: #ffcccb9f; }
+.Trabajo-y-Ciudadania { background-color: #ffcccb9f; }
 
 .proyecto { background-color: #d1c4e9ab; }
 
@@ -424,8 +437,8 @@ tbody td:last-child {
 /* ============================== */
 form {
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente línea */
-    gap: 12px; /* Espacio uniforme entre todos los elementos del formulario */
+    flex-wrap: wrap;
+    gap: 0.8rem;
     margin-top: 1.2rem;
     align-items: flex-end; /* Alinea los elementos a la parte inferior para que inputs y botones se vean bien */
 }
@@ -458,11 +471,28 @@ form select:focus {
     box-shadow: 0 0 0 3px rgba(91, 95, 151, 0.2); /* Sombra suave para un efecto de enfoque */
 }
 
+/* Mantenemos tu estilo original para los botones de formulario,
+   ya que las nuevas clases los sobrescribirán donde sea necesario */
+form button {
+    padding: 0.6rem;
+    font-size: 1rem;
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    flex: 0 0 auto;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #1e40af;
+}
+
 /* Media queries para los formularios (solo en móvil) */
 @media (max-width: 600px) {
     form {
         flex-direction: column; /* Apila los elementos del formulario */
-        gap: 15px; /* Más espacio entre elementos apilados */
+        gap: 1rem; /* Más espacio entre elementos apilados */
         align-items: stretch; /* Estira los elementos para que ocupen todo el ancho */
     }
 
@@ -472,13 +502,14 @@ form select:focus {
 
     form input,
     form select,
-    form .boton-agregar, /* Asegura que los botones también tomen el 100% */
+    /* Asegura que los nuevos botones también tomen el 100% en móvil */
+    form .boton-agregar,
     form .boton-eliminar {
         width: 100%; /* Ocupa el ancho completo */
         flex: none; /* Desactiva el flex-grow/shrink */
+        box-sizing: border-box; /* Incluye padding y borde en el ancho */
     }
 }
-
 
 /* ============================== */
 /* CLIMA                          */
@@ -500,16 +531,17 @@ form select:focus {
 /* BOTONES PERSONALIZADOS         */
 /* ============================== */
 
-/* Estilo base para todos los nuevos botones, combinando propiedades de boton-estetico y boton-principal */
+/* Estilo base para los nuevos botones de "Agregar" y "Eliminar" */
+/* Estos estilos son más específicos y sobrescribirán a 'form button' donde aplique */
 .boton-agregar,
 .boton-eliminar {
     padding: 10px 20px; /* Relleno para un buen tamaño */
     border: none;
     border-radius: 8px;
     font-size: 1rem;
-    font-weight: 500; /* Coherente con tu fuente Rubik */
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: var(--button-shadow); /* Usa tu nueva variable de sombra */
     white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
 }
@@ -530,7 +562,6 @@ form select:focus {
 .boton-eliminar {
     background-color: var(--color-danger); /* Tu color de peligro */
     color: white;
-    /* margin-left: 10px; */ /* Si deseas un espacio entre el botón agregar y eliminar */
 }
 
 .boton-eliminar:hover {
@@ -539,57 +570,56 @@ form select:focus {
     box-shadow: var(--button-shadow-hover);
 }
 
-/* Efecto al hacer clic para todos los botones */
+/* Efecto al hacer clic para todos los botones nuevos */
 .boton-agregar:active,
 .boton-eliminar:active {
     transform: translateY(0); /* Vuelve a su posición normal */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil de "presionado" */
 }
 
-/* Eliminar las clases boton-estetico y boton-principal, ya que las nuevas clases los reemplazan */
-/* .boton-estetico, */
-/* .boton-principal { */
-/* padding: 10px 16px; */
-/* font-size: 1rem; */
-/* border: none; */
-/* border-radius: 8px; */
-/* cursor: pointer; */
-/* transition: background-color 0.3s ease; */
-/* box-shadow: var(--shadow-soft); */
-/* } */
+/* Tus estilos originales de .boton-estetico y .boton-principal */
+.boton-estetico,
+.boton-principal {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
 
-/* .boton-estetico { */
-/* background-color: var(--color-danger); */
-/* color: white; */
-/* } */
+.boton-estetico {
+    background-color: var(--color-danger);
+    color: white;
+}
 
-/* .boton-estetico:hover { */
-/* background-color: var(--color-danger-hover); */
-/* } */
+.boton-estetico:hover {
+    background-color: var(--color-danger-hover);
+}
 
-/* .boton-principal { */
-/* background-color: var(--color-accent); */
-/* color: white; */
-/* } */
+.boton-principal {
+    background-color: var(--color-accent);
+    color: white;
+}
 
-/* .boton-principal:hover { */
-/* background-color: #1e40af; */
-/* } */
+.boton-principal:hover {
+    background-color: #1e40af;
+}
 
-/* .boton-principal.eliminar { */
-/* background-color: var(--color-danger); */
-/* } */
+.boton-principal.eliminar {
+    background-color: var(--color-danger);
+}
 
-/* .boton-principal.eliminar:hover { */
-/* background-color: var(--color-danger-hover); */
-/* } */
+.boton-principal.eliminar:hover {
+    background-color: var(--color-danger-hover);
+}
 
-/* .boton-principal:active, */
-/* .boton-estetico:active { */
-/* transform: scale(0.97); */
-/* box-shadow: none; */
-/* } */
-
+.boton-principal:active,
+.boton-estetico:active {
+    transform: scale(0.97);
+    box-shadow: none;
+}
 
 /* ============================== */
 /* ANIMACIONES                    */
