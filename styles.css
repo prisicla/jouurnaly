@@ -89,6 +89,23 @@ body.dark .boton-eliminar:hover {
     background-color: #a72f27; /* Rojo aún más oscuro al hover */
 }
 
+/* Esto estaba causando conflicto, ahora los botones se manejan con .boton-agregar/.boton-eliminar */
+/* body.dark form button {
+    background-color: #5b5f97;
+}
+
+body.dark form button:hover {
+    background-color: #3d4090;
+} */
+
+
+body.dark .boton-estetico { /* Si sigues usando esta clase en algún lugar, es mejor evitarla */
+    background-color: #c66;
+}
+
+body.dark .boton-estetico:hover { /* Si sigues usando esta clase en algún lugar, es mejor evitarla */
+    background-color: #a33;
+}
 
 body.dark #theme-icon {
     color: #00bcd4;
@@ -501,6 +518,8 @@ form select:focus {
 /* ============================== */
 
 /* Estilo base para todos los nuevos botones, combinando propiedades de boton-estetico y boton-principal */
+/* Notar que las propiedades de padding, font-size, border, border-radius, cursor,
+   transition y box-shadow ahora están en estas clases específicas. */
 .boton-agregar,
 .boton-eliminar {
     padding: 10px 20px; /* Relleno para un buen tamaño */
@@ -546,49 +565,54 @@ form select:focus {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil de "presionado" */
 }
 
-/* Eliminar las clases boton-estetico y boton-principal, ya que las nuevas clases los reemplazan */
-/* .boton-estetico, */
-/* .boton-principal { */
-/* padding: 10px 16px; */
-/* font-size: 1rem; */
-/* border: none; */
-/* border-radius: 8px; */
-/* cursor: pointer; */
-/* transition: background-color 0.3s ease; */
-/* box-shadow: var(--shadow-soft); */
-/* } */
+/* **IMPORTANTE: Eliminar o comentar estas reglas si no las usas en ningún otro lugar,
+    ya que podrían entrar en conflicto con los nuevos estilos de .boton-agregar y .boton-eliminar**
+    
+    Tus clases .boton-estetico y .boton-principal ya no son necesarias si todos tus
+    botones de acción usan .boton-agregar o .boton-eliminar.
+*/
+/* .boton-estetico,
+.boton-principal {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
 
-/* .boton-estetico { */
-/* background-color: var(--color-danger); */
-/* color: white; */
-/* } */
+.boton-estetico {
+    background-color: var(--color-danger);
+    color: white;
+}
 
-/* .boton-estetico:hover { */
-/* background-color: var(--color-danger-hover); */
-/* } */
+.boton-estetico:hover {
+    background-color: var(--color-danger-hover);
+}
 
-/* .boton-principal { */
-/* background-color: var(--color-accent); */
-/* color: white; */
-/* } */
+.boton-principal {
+    background-color: var(--color-accent);
+    color: white;
+}
 
-/* .boton-principal:hover { */
-/* background-color: #1e40af; */
-/* } */
+.boton-principal:hover {
+    background-color: #1e40af;
+}
 
-/* .boton-principal.eliminar { */
-/* background-color: var(--color-danger); */
-/* } */
+.boton-principal.eliminar {
+    background-color: var(--color-danger);
+}
 
-/* .boton-principal.eliminar:hover { */
-/* background-color: var(--color-danger-hover); */
-/* } */
+.boton-principal.eliminar:hover {
+    background-color: var(--color-danger-hover);
+}
 
-/* .boton-principal:active, */
-/* .boton-estetico:active { */
-/* transform: scale(0.97); */
-/* box-shadow: none; */
-/* } */
+.boton-principal:active,
+.boton-estetico:active {
+    transform: scale(0.97);
+    box-shadow: none;
+} */
 
 
 /* ============================== */
