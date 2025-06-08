@@ -1,36 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head> 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Journaly - Tu organizador escolar</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-  
-  <link rel="icon" type="image/png" href="organigrama/logo.png">  
-  
-  <script defer src="script.js"></script>
-</head>
-<body>
-<header class="main-header">
-  <h1>Journaly</h1> 
-  <span id="weather" style="font-size: 1rem; margin-left: 10px;"></span> 
-  <div class="header-right">
-    <nav id="menu" aria-label="Menú principal">
-      <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
-      <ul class="menu-list">
-        <li><a href="#hoy" aria-label="Ir a la sección de Hoy">Hoy</a></li>
-        <li><a href="#tareas" aria-label="Ir a la sección de Tareas">Tareas</a></li>
-        <li><a href="#notas" aria-label="Ir a la sección de Notas">Notas</a></li>
-        <li><a href="#examenes" aria-label="Ir a la sección de Exámenes">Exámenes</a></li>
-        <li><a href="#horario" aria-label="Ir a la sección de Horario">Horario</a></li>
-      </ul>
-    </nav>
-    <button id="theme-toggle" aria-label="Cambiar tema">
-      <i id="theme-icon" class="fas fa-moon"></i>
-    </button>
-  </div>
+<!DOCTYPE html> 
+<html lang="es"> 
+<head>  
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <title>Journaly - Tu organizador escolar</title> 
+  <link rel="stylesheet" href="styles.css" /> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> 
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet"> 
+     
+  <link rel="icon" type="image/png" href="organigrama/logo.png">  
+     
+  <script defer src="script.js"></script> 
+</head> 
+<body> 
+<header class="main-header"> 
+  <h1> 
+    <span class="journaly-title">Journaly</span> <span id="weather" style="font-size: 1rem; margin-left: 10px;"></span> 
+  </h1> 
+  <div class="header-right"> 
+    <nav id="menu" aria-label="Menú principal"> 
+      <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button> 
+      <ul class="menu-list"> 
+        <li><a href="#hoy" aria-label="Ir a la sección de Hoy">Hoy</a></li> 
+        <li><a href="#tareas" aria-label="Ir a la sección de Tareas">Tareas</a></li> 
+        <li><a href="#notas" aria-label="Ir a la sección de Notas">Notas</a></li> 
+        <li><a href="#examenes" aria-label="Ir a la sección de Exámenes">Exámenes</a></li> 
+        <li><a href="#horario" aria-label="Ir a la sección de Horario">Horario</a></li> 
+      </ul> 
+    </nav> 
+    <button id="theme-toggle" aria-label="Cambiar tema"> 
+      <i id="theme-icon" class="fas fa-moon"></i> 
+    </button> 
+  </div> 
 </header>
 
 <main class="container">
