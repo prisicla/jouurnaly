@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- CLIMA ---
     const weatherDiv = document.getElementById('weather');
-    const apiKey = '671f6a470eba37e2e650177a9d2e16cf';
+    const apiKey = '671f6a470eba37e2e650177a9d2e16cf'; // Tu API Key
     const ciudad = 'José C. Paz,AR';
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(ciudad)}&units=metric&lang=es&appid=${apiKey}`;
 
@@ -73,6 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const listaNotas = document.getElementById('listaNotas');
     const btnEliminarNotas = document.getElementById('btnEliminarNotas');
 
+    // Array para almacenar las notas
+    let notasGuardadas = JSON.parse(localStorage.getItem('notas')) || [];
+
     const crearNotaElemento = (materia, texto, fecha, marcada = false) => {
         const li = document.createElement('li');
         li.dataset.materia = materia;
@@ -86,11 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const guardarNotas = () => {
         if (!listaNotas) return;
-        const notas = Array.from(listaNotas.children).map(li => {
+        // Recopilamos el estado actual de las notas del DOM
+        notasGuardadas = Array.from(listaNotas.children).map(li => {
             const spanTexto = li.querySelector('.nota-texto');
             const spanFecha = li.querySelector('.nota-fecha');
             const inputChecked = li.querySelector('input');
 
+            // Aseguramos que la extracción sea robusta
             const textoContent = spanTexto ? spanTexto.textContent.split(': ')[1] : '';
             const fechaContent = spanFecha ? spanFecha.textContent.replace(/[()]/g, '') : '';
             const materiaContent = li.dataset.materia || '';
@@ -102,12 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 marcada: inputChecked ? inputChecked.checked : false
             };
         });
-        localStorage.setItem('notas', JSON.stringify(notas));
+        localStorage.setItem('notas', JSON.stringify(notasGuardadas));
     };
 
     const cargarNotas = () => {
         if (!listaNotas) return;
-        const notasGuardadas = JSON.parse(localStorage.getItem('notas')) || [];
+        listaNotas.innerHTML = ''; // Limpiamos el contenido actual
         notasGuardadas.forEach(({ materia, texto, fecha, marcada }) => {
             listaNotas.appendChild(crearNotaElemento(materia, texto, fecha, marcada));
         });
@@ -119,90 +124,107 @@ document.addEventListener('DOMContentLoaded', () => {
         const texto = formNota.inputNota.value.trim();
         const fecha = formNota.fechaNota.value;
         if (!materia || !texto) return;
+
+        // Añadimos la nueva nota al DOM y luego guardamos todo
         listaNotas?.appendChild(crearNotaElemento(materia, texto, fecha));
-        guardarNotas();
+        guardarNotas(); // Persiste la nueva nota
         formNota.reset();
     });
 
     btnEliminarNotas?.addEventListener('click', () => {
         if (!listaNotas) return;
+        // Eliminamos del DOM
         listaNotas.querySelectorAll('input:checked').forEach(el => el.parentElement?.remove());
-        guardarNotas();
+        guardarNotas(); // Persiste los cambios (notas eliminadas)
     });
 
+    // Este listener guarda cada vez que una nota cambia de estado (marcada/desmarcada)
     listaNotas?.addEventListener('change', guardarNotas);
-    cargarNotas();
+    cargarNotas(); // Cargar notas al inicio de la página
 
-// --- TAREAS ---
+    // --- TAREAS ---
     const formTarea = document.getElementById('formTarea');
     const listaTareas = document.getElementById('listaTareas');
     const btnEliminarTareas = document.getElementById('btnEliminarTareas');
     const MAX_TAREA_LENGTH = 100;
 
+    // Array para almacenar las tareas
+    let tareasGuardadas = JSON.parse(localStorage.getItem('tareas')) || [];
+
+    // Función para generar un ID único más robusto
     const generarId = () => `tarea-${crypto.randomUUID()}`;
 
     const crearTareaElemento = (materia, texto, fecha = '', id = generarId(), completada = false) => {
         const li = document.createElement('li');
+        // El id se usa en el input y label
         li.innerHTML = `
             <input type="checkbox" id="${id}" ${completada ? 'checked' : ''}>
             <label for="${id}">${materia}: ${texto}</label>
             `;
-        if (fecha) li.dataset.fecha = fecha;
+        if (fecha) li.dataset.fecha = fecha; // Guardar la fecha en un dataset
         return li;
     };
 
     const guardarTareas = () => {
         if (!listaTareas) return;
-        const tareas = Array.from(listaTareas.children).map(li => {
+        // Recopilamos el estado actual de las tareas del DOM
+        tareasGuardadas = Array.from(listaTareas.children).map(li => {
             const label = li.querySelector('label');
             const input = li.querySelector('input');
             if (!label || !input) return null;
+
+            // Extraemos materia y texto del label
             const [materia, ...resto] = label.textContent.split(':');
             return {
                 id: input.id,
                 materia: materia.trim(),
                 texto: resto.join(':').trim(),
                 completada: input.checked,
-                fecha: li.dataset.fecha || ''
+                fecha: li.dataset.fecha || '' // Recuperamos la fecha del dataset
             };
-        }).filter(Boolean);
-        localStorage.setItem('tareas', JSON.stringify(tareas));
+        }).filter(Boolean); // Filtramos cualquier entrada nula
+        localStorage.setItem('tareas', JSON.stringify(tareasGuardadas));
     };
 
     const cargarTareas = () => {
         if (!listaTareas) return;
-        (JSON.parse(localStorage.getItem('tareas')) || []).forEach(({ id, materia, texto, completada, fecha }) => {
+        listaTareas.innerHTML = ''; // Limpiamos el contenido actual
+        tareasGuardadas.forEach(({ id, materia, texto, completada, fecha }) => {
             listaTareas.appendChild(crearTareaElemento(materia, texto, fecha, id, completada));
         });
     };
 
     formTarea?.addEventListener('submit', e => {
         e.preventDefault();
-        // --- INICIO DEL CAMBIO QUE DEBES APLICAR ---
-        const materiaSelectElement = formTarea.materiaSelect; // Obtener el elemento <select>
-        const materiaParaMostrar = materiaSelectElement.options[materiaSelectElement.selectedIndex].textContent; // <--- ¡Esta es la línea clave!
-        // --- FIN DEL CAMBIO ---
-
+        const materiaSelectElement = formTarea.materiaSelect;
+        const materiaParaMostrar = materiaSelectElement.options[materiaSelectElement.selectedIndex].textContent;
         const texto = formTarea.inputTarea.value.trim();
+        const fecha = formTarea.fechaTarea ? formTarea.fechaTarea.value : ''; // Obtener la fecha si existe el input
         if (!materiaParaMostrar || !texto || texto.length > MAX_TAREA_LENGTH) return;
-        
-        listaTareas?.appendChild(crearTareaElemento(materiaParaMostrar, texto)); // Usar la materia con el texto correcto
-        guardarTareas();
+
+        // Añadimos la nueva tarea al DOM y luego guardamos todo
+        listaTareas?.appendChild(crearTareaElemento(materiaParaMostrar, texto, fecha));
+        guardarTareas(); // Persiste la nueva tarea
         formTarea.reset();
     });
 
     btnEliminarTareas?.addEventListener('click', () => {
         if (!listaTareas) return;
+        // Eliminamos del DOM
         listaTareas.querySelectorAll('input:checked').forEach(el => el.parentElement?.remove());
-        guardarTareas();
+        guardarTareas(); // Persiste los cambios (tareas eliminadas)
     });
 
+    // Este listener guarda cada vez que una tarea cambia de estado (marcada/desmarcada)
     listaTareas?.addEventListener('change', guardarTareas);
-    cargarTareas();
-    
+    cargarTareas(); // Cargar tareas al inicio de la página
+
     // --- EXÁMENES ---
     const formExamen = document.getElementById('formExamen');
     const listaExamenes = document.getElementById('listaExamenes');
+
+    // Array para almacenar los exámenes
+    let examenesGuardados = JSON.parse(localStorage.getItem('examenes')) || [];
 
     const crearExamenElemento = (materia, texto, fecha) => {
         const li = document.createElement('li');
@@ -214,24 +236,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const guardarExamenes = () => {
         if (!listaExamenes) return;
-        const examenes = Array.from(listaExamenes.children).map(li => {
+        // Recopilamos el estado actual de los exámenes del DOM
+        examenesGuardados = Array.from(listaExamenes.children).map(li => {
             const spanContent = li.querySelector('span')?.textContent;
             if (!spanContent) return null;
 
-            const [materiaTexto, fechaTexto] = spanContent.split(' (');
-            const [materia, ...resto] = materiaTexto.split(':');
-            return {
-                materia: materia.trim(),
-                texto: resto.join(':').trim(),
-                fecha: fechaTexto?.replace(')', '') || ''
-            };
-        }).filter(Boolean);
-        localStorage.setItem('examenes', JSON.stringify(examenes));
+            // Dividir el contenido para extraer materia, texto y fecha
+            const regex = /^(.*?):\s*(.*?)\s*\((.*?)\)$/;
+            const match = spanContent.match(regex);
+
+            if (match) {
+                return {
+                    materia: match[1].trim(),
+                    texto: match[2].trim(),
+                    fecha: match[3].trim()
+                };
+            }
+            return null; // Si no hay match, retornar null
+        }).filter(Boolean); // Filtramos cualquier entrada nula
+        localStorage.setItem('examenes', JSON.stringify(examenesGuardados));
     };
 
     const cargarExamenes = () => {
         if (!listaExamenes) return;
-        (JSON.parse(localStorage.getItem('examenes')) || []).forEach(({ materia, texto, fecha }) => {
+        listaExamenes.innerHTML = ''; // Limpiamos el contenido actual
+        examenesGuardados.forEach(({ materia, texto, fecha }) => {
             listaExamenes.appendChild(crearExamenElemento(materia, texto, fecha));
         });
     };
@@ -242,12 +271,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const texto = formExamen.inputExamen.value.trim();
         const fecha = formExamen.fechaExamen.value;
         if (!materia || !texto || !fecha) return;
+
+        // Añadimos el nuevo examen al DOM y luego guardamos todo
         listaExamenes?.appendChild(crearExamenElemento(materia, texto, fecha));
-        guardarExamenes();
+        guardarExamenes(); // Persiste el nuevo examen
         formExamen.reset();
     });
 
-    cargarExamenes();
+    cargarExamenes(); // Cargar exámenes al inicio de la página
 
     // --- HOY ---
     const actualizarHoy = () => {
@@ -264,8 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .findIndex(th => th.textContent.toLowerCase().trim() === diaHoy);
 
         if (colIndex === -1) {
-             console.warn(`No se encontró la columna para el día '${diaHoy}' en el horario.`);
-             return;
+            console.warn(`No se encontró la columna para el día '${diaHoy}' en el horario.`);
+            return;
         }
 
         const materiasHoy = Array.from(tabla.querySelectorAll('tbody tr'))
@@ -291,6 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
+        // Usa las variables que ahora guardan los datos cargados de localStorage
         agregarAListaHoy(JSON.parse(localStorage.getItem('tareas')) || [], false);
         agregarAListaHoy(JSON.parse(localStorage.getItem('notas')) || []);
         agregarAListaHoy(JSON.parse(localStorage.getItem('examenes')) || []);
@@ -340,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!materiaTexto || materiaTexto.toLowerCase() === 'recreo') return;
 
                 const materiaNorm = normalizar(materiaTexto);
+                // Usamos la variable que ya está sincronizada con localStorage
                 const tareas = JSON.parse(localStorage.getItem('tareas')) || [];
                 const tareasMateria = tareas.filter(t =>
                     normalizar(t.materia) === materiaNorm && !t.completada
@@ -395,31 +428,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const normalizar = str =>
             str.normalize("NFD").replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 
-        // Obtener todos los TH de la cabecera de la tabla
         const allThs = Array.from(tabla.querySelectorAll('thead th'));
         const filas = Array.from(tabla.querySelectorAll('tbody tr'));
 
         allThs.forEach((thElement, colIndex) => {
-            // No queremos un tooltip para la primera columna si es la de la hora
-            // O si el texto del encabezado está vacío o es un espacio en blanco
             if (colIndex === 0 && thElement.textContent.trim().toLowerCase() === 'hora') {
                 return;
             }
-            if (!thElement.textContent.trim()) { // En caso de que haya un TH vacío
-                 return;
+            if (!thElement.textContent.trim()) {
+                return;
             }
 
             let tooltipDiv = null;
 
             thElement.addEventListener('mouseenter', () => {
                 const materias = filas
-                    // Usamos colIndex directamente ya que es el índice real de la columna
                     .map(fila => fila.children[colIndex]?.textContent?.trim())
                     .filter(Boolean)
                     .filter(text => text.toLowerCase() !== 'recreo');
 
                 if (materias.length === 0) return;
 
+                // Usamos la variable que ya está sincronizada con localStorage
                 const tareas = JSON.parse(localStorage.getItem('tareas')) || [];
                 const tareasPendientesDia = tareas.filter(t =>
                     materias.some(m => normalizar(t.materia) === normalizar(m)) && !t.completada
