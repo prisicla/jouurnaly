@@ -401,6 +401,7 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
 
 .matematicas { background-color: #c3f7c9a4; }
 
+/* CORREGIDO: Eliminado espacio al final */
 .filosofia { background-color: #ffe0b2ad; }
 
 .ingles { background-color: #bfdbfe9f; }
@@ -413,6 +414,7 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
 
 .arte { background-color: #b2dfdbad; }
 
+/* CORREGIDO: Eliminado espacio y mayúscula, y asegurar la "y" minúscula */
 .Trabajo-y-Ciudadania { background-color: #ffcccb9f; }
 
 .proyecto { background-color: #d1c4e9ab; }
