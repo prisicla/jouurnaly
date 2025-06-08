@@ -23,7 +23,7 @@
 /* ============================== */
 body {
     font-family: 'Rubik', sans-serif;
-    background-color: var(--color-bg);
+    background-color: var(#5b5f97);
     color: var(--color-text, #222);
     margin: 0;
     padding: 0;
