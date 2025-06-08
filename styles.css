@@ -139,6 +139,22 @@ header.main-header {
     box-shadow: var(--shadow-soft);
 }
 
+/* Estilos para el título H1 dentro del header (Journaly) */
+header.main-header h1 {
+    margin: 0; /* Asegura que no tenga márgenes extras */
+    font-size: 2rem; /* Mantén tu tamaño de fuente actual */
+    font-weight: bold; /* Mantén tu peso de fuente actual */
+    color: white; /* Color inicial del texto */
+    transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease; /* Transiciones suaves para la animación */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar por encima */
+}
+
+header.main-header h1:hover {
+    transform: translateY(-3px) scale(1.02); /* Se eleva ligeramente y crece un poco */
+    color: var(--color-accent); /* Cambia al color de acento */
+    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3); /* Sombra suave para un efecto de "brillo" */
+}
+
 /* ============================== */
 /* MENÚ                           */
 /* ============================== */
