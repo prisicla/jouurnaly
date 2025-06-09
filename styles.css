@@ -3,28 +3,32 @@
 /* ============================== */
 :root {
     --color-bg: #f5f3ff;
-    --color-header: var(--primary-color);
-    --color-accent: var(--primary-color);
+    --color-header: var(--primary-color); /* Usar la variable primary-color para consistencia */
+    --color-accent: var(--primary-color); /* Usar la variable primary-color para consistencia */
     --color-danger: #ffadad;
     --color-danger-hover: #ff6b6b;
     --color-hover: #ece9f1;
     --color-list-bg: #ffffff;
     --color-list-hover: #f0f4ff;
     --color-table-border: #e0e0e0;
-    --color-table-header: var(--primary-color);
+    --color-table-header: var(--primary-color); /* Usar la variable primary-color para consistencia */
     --shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.05);
+    /* Nuevas variables para la sombra de los botones */
     --button-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     --button-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.15);
-    --color-text: #222;
+    --color-text: #222; /* Definir color de texto base */
 
-    --primary-color: #5b5f97;
-    --primary-hover-color: #3d4090;
-    --button-text-color: #ffffff;
+    /* Variables de color para los botones y elementos principales (VIOLETAS) */
+    --primary-color: #5b5f97; /* Tu violeta principal, como en la imagen */
+    --primary-hover-color: #3d4090; /* Un tono más oscuro para el hover */
+    --button-text-color: #ffffff; /* Color del texto/ícono en los botones */
 
-    --task-icon-color: #28a745;
-    --note-icon-color: #ffc107;
-    --exam-icon-color: #007bff;
+    /* Colores para iconos de tareas/notas/exámenes en sección Hoy */
+    --task-icon-color: #28a745; /* Verde para tareas */
+    --note-icon-color: #ffc107; /* Amarillo/Naranja para notas */
+    --exam-icon-color: #007bff; /* Azul para exámenes */
 
+    /* Colores para materias (si no los tenías definidos por variables antes) */
     --matematicas-color: #e74c3c;
     --filosofia-color: #8e44ad;
     --ingles-color: #f39c12;
@@ -39,13 +43,8 @@
 }
 
 /* ============================== */
-/* BASE (Importante: Añadir box-sizing) */
+/* BASE                           */
 /* ============================== */
-/* Reset esencial para un layout responsivo */
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
 html, body {
     font-family: 'Rubik', sans-serif;
     background-color: var(--color-bg);
@@ -54,8 +53,6 @@ html, body {
     padding: 0;
     animation: fadeInBody 0.5s ease-in;
     transition: background-color 0.4s ease, color 0.4s ease;
-    /* Asegura que el body no tenga scroll horizontal inesperado */
-    overflow-x: hidden;
 }
 
 /* ============================== */
@@ -66,13 +63,13 @@ body.dark {
     color: #f0f0f0;
     --color-text: #f0f0f0;
 
-    --color-bg: #121212;
-    --color-header: #3c3c3c;
-    --color-accent: #8e24aa;
-    --primary-color: #8e24aa;
-    --primary-hover-color: #ba68c8;
-    --color-danger: #cf3d33;
-    --color-danger-hover: #a72f27;
+    --color-bg: #121212; /* Ajuste para el fondo general del body en oscuro */
+    --color-header: #3c3c3c; /* Un gris oscuro para el header */
+    --color-accent: #8e24aa; /* Un violeta que resalte en oscuro */
+    --primary-color: #8e24aa; /* Violeta principal para dark mode */
+    --primary-hover-color: #ba68c8; /* Violeta más claro para hover en dark mode */
+    --color-danger: #cf3d33; /* Un rojo más oscuro para el modo oscuro */
+    --color-danger-hover: #a72f27; /* Rojo aún más oscuro al hover */
     --color-hover: #3a3a3a;
     --color-list-bg: #2c2c2c;
     --color-list-hover: #3a3a3a;
@@ -81,22 +78,25 @@ body.dark {
     --button-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     --button-shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.4);
 
-    --task-icon-color: #4CAF50;
-    --note-icon-color: #FFEB3B;
-    --exam-icon-color: #2196F3;
+    /* Colores para iconos de tareas/notas/exámenes en sección Hoy (dark mode) */
+    --task-icon-color: #4CAF50; /* Verde más brillante */
+    --note-icon-color: #FFEB3B; /* Amarillo más brillante */
+    --exam-icon-color: #2196F3; /* Azul más brillante */
 
-    --matematicas-color: #ef5350;
-    --filosofia-color: #ab47bc;
-    --ingles-color: #ffca28;
-    --historia-color: #66bb6a;
-    --literatura-color: #42a5f5;
-    --geografia-color: #26a69a;
-    --arte-color: #ffee58;
-    --proyecto-color: #ff7043;
-    --trabajo-ciudadania-color: #78909c;
-    --catequesis-color: #ffb74d;
-    --general-color: #bdbdbd;
+    /* Ajusta los colores de materia para el tema oscuro si es necesario */
+    --matematicas-color: #ef5350; /* Más claro */
+    --filosofia-color: #ab47bc; /* Más claro */
+    --ingles-color: #ffca28; /* Más claro */
+    --historia-color: #66bb6a; /* Más claro */
+    --literatura-color: #42a5f5; /* Más claro */
+    --geografia-color: #26a69a; /* Más claro */
+    --arte-color: #ffee58; /* Más claro */
+    --proyecto-color: #ff7043; /* Más claro */
+    --trabajo-ciudadania-color: #78909c; /* Más claro */
+    --catequesis-color: #ffb74d; /* Más claro */
+    --general-color: #bdbdbd; /* Más claro */
 }
+
 
 body.dark .section-box {
     background-color: #1e1e1e;
@@ -130,47 +130,54 @@ body.dark form select {
     border: 1px solid #444;
 }
 
+/* Modificación aquí para los botones de formulario en modo oscuro */
 body.dark form button {
-    background-color: var(--primary-color); /* Usar la primary-color del dark mode */
+    background-color: var(--color-header); /* Usa el color del header */
     color: white;
 }
 
 body.dark form button:hover {
-    background-color: var(--primary-hover-color); /* Usar la primary-hover-color del dark mode */
+    background-color: #555555; /* Un gris para el hover */
 }
 
+/* Estilos para los nuevos botones en modo oscuro (agregar y eliminar) */
+/* **MODIFICADO** */
 body.dark .boton-agregar {
-    background-color: var(--primary-color);
+    background-color: var(--color-header); /* Usa el color del header */
     color: white;
 }
 
+/* **MODIFICADO** */
 body.dark .boton-agregar:hover {
-    background-color: var(--primary-hover-color);
+    background-color: #555555; /* Un gris para el hover */
 }
 
-body.dark .boton-eliminar { /* Aplica directamente a boton-eliminar */
-    background-color: var(--color-danger); /* Usa el color peligroso del dark mode */
-    color: white;
+/* MODIFICADO: Estilo para el botón "Eliminar Tareas Seleccionadas" en modo oscuro */
+body.dark .boton-principal.eliminar { /* Añade el body.dark para que solo afecte al modo oscuro */
+    background-color: var(--color-header); /* Usa el color del header */
+    color: white; /* Asegúrate de que el texto siga siendo blanco */
 }
 
-body.dark .boton-eliminar:hover { /* Aplica directamente a boton-eliminar */
-    background-color: var(--color-danger-hover); /* Usa el hover peligroso del dark mode */
+body.dark .boton-principal.eliminar:hover { /* Añade el body.dark para el hover en modo oscuro */
+    background-color: #555555; /* Un tono un poco más claro para el hover */
 }
+
+/* Ajuste para los botones de navegación de día en modo oscuro - AHORA USAN LAS VARIABLES GENERALES */
+/* ELIMINADA REGLA ESPECÍFICA ANTERIOR body.dark .day-navigation button */
+
 
 body.dark #theme-icon {
     color: #00bcd4;
 }
 
+/* Tipografía negra para las materias (celdas del cuerpo) en modo oscuro */
 body.dark #horario tbody td {
-    color: #f0f0f0; /* Cambiado a un blanco suave para mejor contraste en dark mode */
+    color: #000;
 }
 
+/* Tipografía blanca para los días de la semana (cabecera) en modo oscuro */
 body.dark #horario thead th {
     color: #fff;
-}
-
-body.dark form label {
-    color: #ccc;
 }
 
 
@@ -188,9 +195,9 @@ header.main-header {
     align-items: center;
     justify-content: space-between;
     box-shadow: var(--shadow-soft);
-    flex-wrap: wrap; /* Permitir que los elementos se envuelvan */
 }
 
+/* Estilos para el título H1 dentro del header (Journaly) */
 header.main-header h1 {
     margin: 0;
     font-size: 2rem;
@@ -198,35 +205,24 @@ header.main-header h1 {
     color: white;
     transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
     cursor: pointer;
-    /* Permite que el título ocupe espacio, pero no se rompa */
-    white-space: nowrap;
-    flex-shrink: 0; /* Evita que el título se encoja */
 }
 
 header.main-header h1:hover {
     transform: translateY(-3px) scale(1.02);
-    color: var(--color-accent);
+    color: var(--color-accent); /* Cambia al color de acento definido en tus variables */
     text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* Espacio entre el menú y el toggle del tema */
-}
-
 /* ============================== */
-/* MENÚ (Ajustes para mobile)     */
+/* MENÚ                           */
 /* ============================== */
 nav .menu-toggle {
     background: none;
     color: white;
     border: none;
-    font-size: 1.6rem; /* Aumenta el tamaño para que sea más fácil de tocar */
+    font-size: 1.6rem;
     cursor: pointer;
-    display: none; /* Oculto por defecto en escritorio */
-    z-index: 1001; /* Asegura que esté por encima del menú desplegado */
-    padding: 0.5rem; /* Área de toque */
+    display: none;
 }
 
 .menu-list {
@@ -235,8 +231,7 @@ nav .menu-toggle {
     gap: 1.2rem;
     padding: 0;
     margin: 0;
-    /* Transición para el menú desplegable */
-    transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+    transition: max-height 0.4s ease, opacity 0.4s ease;
 }
 
 .menu-list li a {
@@ -253,64 +248,53 @@ nav .menu-toggle {
 /* Media query para dispositivos más pequeños (móviles y tablets) */
 @media (max-width: 768px) {
     header.main-header {
-        flex-direction: column; /* Apila el título y el header-right */
-        align-items: flex-start; /* Alinea a la izquierda */
+        flex-direction: column;
+        align-items: flex-start;
         padding: 1rem;
     }
 
     header.main-header h1 {
-        /* Se mantiene el tamaño del título para que no sea diminuto,
-           pero si es muy largo, puedes reducirlo un poco más */
-        font-size: 1.8rem;
-        width: 100%; /* Ocupa todo el ancho */
-        text-align: center; /* Centra el título */
         margin-bottom: 0.5rem;
     }
 
     .header-right {
-        width: 100%; /* Ocupa todo el ancho disponible */
-        justify-content: space-between; /* Espacio entre menú y tema toggle */
-        padding-top: 0.5rem; /* Pequeño padding si se apila */
-        position: relative; /* Para posicionar el menu-toggle correctamente */
+        width: 100%;
+        justify-content: space-between;
     }
 
     nav .menu-toggle {
-        display: block; /* Muestra el botón de hamburguesa en móviles */
-        position: absolute; /* Permite posicionarlo libremente */
-        top: 0; /* Alinea al top del header-right */
-        right: 0; /* Alinea a la derecha del header-right */
-        font-size: 2rem; /* Aumenta el tamaño para ser más tocable */
+        display: block;
+        font-size: 2rem;
     }
 
     .menu-list {
-        flex-direction: column; /* Los enlaces se apilan verticalmente */
-        max-height: 0; /* Oculto por defecto */
+        flex-direction: column;
+        max-height: 0;
         opacity: 0;
         overflow: hidden;
-        width: 100%; /* Ocupa el 100% del ancho del header */
-        position: absolute; /* Posiciona el menú debajo del header */
+        width: 100%;
+        position: absolute;
         background-color: var(--color-header);
-        top: 100%; /* Justo debajo del header. Ajusta si tu header tiene altura dinámica */
+        top: 100%;
         left: 0;
         box-shadow: var(--shadow-soft);
         border-radius: 0 0 8px 8px;
-        padding: 0 1rem; /* Sin padding vertical cuando está oculto */
+        padding: 0 1rem;
     }
 
     .menu-list.show {
-        max-height: 300px; /* Suficientemente grande para contener los elementos */
+        max-height: 300px;
         opacity: 1;
-        padding: 1rem; /* Padding cuando está visible */
+        padding: 1rem;
     }
 
     .menu-list li {
         width: 100%;
-        text-align: center; /* Centra los elementos del menú */
         padding: 0.5rem 0;
     }
 
     .menu-list li a {
-        display: block; /* Hace que el enlace ocupe todo el espacio del li */
+        display: block;
         padding: 0.5rem 0;
     }
 }
@@ -325,6 +309,7 @@ nav .menu-toggle {
     margin: 0 auto;
 }
 
+/* Media query para el contenedor general en pantallas pequeñas */
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
@@ -335,7 +320,7 @@ nav .menu-toggle {
 /* SECCIONES                      */
 /* ============================== */
 .section-box {
-    background-color: var(--color-list-bg);
+    background-color: var(--color-list-bg); /* Usar variable para consistencia */
     border-radius: 14px;
     box-shadow: var(--shadow-soft);
     padding: 1.8rem;
@@ -358,44 +343,31 @@ nav .menu-toggle {
 }
 
 #hoy.section-box {
-    flex: 0 0 30%; /* Tamaño flexible pero con un ancho base */
-    min-width: 250px; /* Asegura que no se haga demasiado pequeño */
+    flex: 0 0 30%;
+    min-width: 250px;
 }
 
 #horario.section-box {
-    flex: 1; /* Ocupa el espacio restante */
+    flex: 1;
 }
-
-/* Contenedor para las secciones de Tareas, Notas, Exámenes */
-.bottom-sections {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 columnas flexibles */
-    gap: 2rem;
-}
-
 
 /* Media query para apilar las secciones en pantallas pequeñas */
 @media (max-width: 768px) {
     .top-sections {
-        flex-direction: column; /* Apila las secciones */
-        gap: 1.5rem;
-    }
-
-    .bottom-sections {
-        grid-template-columns: 1fr; /* Una sola columna para móviles */
+        flex-direction: column;
         gap: 1.5rem;
     }
 
     #hoy.section-box,
     #horario.section-box,
     .bottom-sections section {
-        flex: 0 0 100%; /* Ocupa el 100% del ancho */
-        min-width: unset; /* Reinicia el min-width */
-        padding: 1.2rem; /* Menos padding en móvil */
+        flex: 0 0 100%;
+        min-width: unset;
+        padding: 1.2rem;
     }
 
     .section-box h2 {
-        font-size: 1.6rem; /* Ajuste de tamaño de título */
+        font-size: 1.6rem;
     }
 }
 
@@ -419,11 +391,6 @@ nav .menu-toggle {
     box-shadow: var(--shadow-soft);
     transition: background-color 0.3s ease;
     font-size: 1rem;
-    flex-wrap: wrap; /* Importante: permite que los elementos se envuelvan */
-}
-
-.interactive-list li:last-child {
-    margin-bottom: 0; /* Elimina margen inferior del último item */
 }
 
 .interactive-list li:hover {
@@ -435,7 +402,6 @@ nav .menu-toggle {
     height: 18px;
     cursor: pointer;
     transition: transform 0.2s ease;
-    flex-shrink: 0; /* Evita que el checkbox se encoja */
 }
 
 .interactive-list input[type="checkbox"]:checked {
@@ -448,67 +414,46 @@ nav .menu-toggle {
     opacity: 0.8;
 }
 
-/* Estilo para las etiquetas de las listas, para que el texto se envuelva */
-.interactive-list li label {
-    flex-grow: 1; /* Permite que el label ocupe el espacio restante */
-    display: flex; /* Convierte el label en flex para controlar su contenido */
-    flex-wrap: wrap; /* Permite que el texto y la materia se envuelvan */
-    align-items: baseline; /* Alinea los elementos a la línea base */
-    gap: 5px; /* Espacio entre materia y texto */
-}
-
 /* --- Estilos para la sección HOY (Íconos y materia en lista) --- */
 
 .section-box#hoy .interactive-list li.hoy-item {
-    display: flex; /* Asegura flexbox para los elementos */
-    align-items: flex-start; /* Alinea ícono y texto arriba */
+    display: flex;
+    align-items: flex-start;
     padding: 10px 15px;
-    border-bottom: 1px solid var(--color-table-border);
-    background-color: var(--color-list-bg);
+    border-bottom: 1px solid var(--color-table-border); /* Usar tu variable de borde */
+    background-color: var(--color-list-bg); /* Usar tu variable de fondo de lista */
     border-radius: 8px;
     margin-bottom: 8px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-soft); /* Usar tu variable de sombra */
     transition: all 0.2s ease-in-out;
-    flex-wrap: nowrap; /* Evita que el ícono y el texto se envuelvan si no es necesario */
 }
-
-/* En móvil, permite que el texto de la materia se envuelva */
-@media (max-width: 768px) {
-    .section-box#hoy .interactive-list li.hoy-item {
-        flex-direction: row; /* Mantener en fila, pero permitir envoltura interna del label */
-        align-items: center; /* Centrar verticalmente los ítems principales */
-        gap: 8px;
-    }
-
-    .section-box#hoy .interactive-list li.hoy-item label {
-        flex-direction: column; /* Apila materia y descripción en Hoy */
-        align-items: flex-start;
-        gap: 2px;
-    }
-
-    .hoy-item .hoy-materia {
-        margin-right: 0; /* Elimina el margen si se apila */
-    }
-}
-
 
 .section-box#hoy .interactive-list li.hoy-item:hover {
-    background-color: var(--color-list-hover);
+    background-color: var(--color-list-hover); /* Usar tu variable de hover de lista */
     transform: translateY(-2px);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); /* Podrías usar --button-shadow-hover aquí */
 }
 
 .hoy-icon {
     margin-right: 12px;
     font-size: 1.2em;
-    color: var(--primary-color);
+    color: var(--primary-color); /* Color primario para los íconos por defecto */
     flex-shrink: 0;
     margin-top: 2px;
 }
 
-.hoy-icon.tarea-icon { color: var(--task-icon-color); }
-.hoy-icon.nota-icon { color: var(--note-icon-color); }
-.hoy-icon.examen-icon { color: var(--exam-icon-color); }
+/* Colores específicos para los íconos (usando variables) */
+.hoy-icon.tarea-icon {
+    color: var(--task-icon-color);
+}
+
+.hoy-icon.nota-icon {
+    color: var(--note-icon-color);
+}
+
+.hoy-icon.examen-icon {
+    color: var(--exam-icon-color);
+}
 
 .hoy-item .hoy-materia {
     font-weight: 600;
@@ -528,21 +473,25 @@ nav .menu-toggle {
 .catequesis .hoy-materia, .hoy-item.catequesis { color: var(--catequesis-color); }
 .general .hoy-materia, .hoy-item.general { color: var(--general-color); }
 
+/* Ajustes para el mensaje de no tareas */
 .section-box#hoy .interactive-list li.no-tasks {
     font-style: italic;
-    color: #777;
+    color: #777; /* Un gris más suave para el texto */
     text-align: center;
     padding: 20px;
     background-color: transparent;
     box-shadow: none;
     border-bottom: none;
 }
+/* Fin de Estilos para la sección HOY (Íconos y materia en lista) */
+
 
 /* ============================== */
 /* TABLA DE HORARIO               */
 /* ============================== */
+/* Contenedor para scroll horizontal en móviles */
 .table-container {
-    overflow-x: auto; /* Permite scroll horizontal si la tabla es más ancha que la pantalla */
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -556,7 +505,7 @@ table {
     font-family: 'Rubik', sans-serif;
     border-radius: 12px;
     overflow: hidden;
-    min-width: 600px; /* Asegura que la tabla no se haga demasiado pequeña en móvil */
+    min-width: 600px;
 }
 
 thead tr {
@@ -606,22 +555,21 @@ tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
 .proyecto { background-color: #d1c4e9ab; }
 .catequesis { background-color: #e6ee9c86; }
 
+
 /* Media query para ajustar la tabla en pantallas más pequeñas */
 @media (max-width: 600px) {
     table {
-        font-size: 0.8rem; /* Tamaño de fuente ligeramente más pequeño para caber más */
-        min-width: 500px; /* Mantener un mínimo para evitar que se vea muy comprimida */
+        font-size: 0.85rem;
     }
 
     thead th,
     tbody td {
-        padding: 0.6rem; /* Menos padding en celdas */
-        white-space: nowrap; /* Evita que el texto de las celdas se envuelva */
+        padding: 0.7rem;
     }
 }
 
 /* ============================== */
-/* FORMULARIO (Ajustes para mobile) */
+/* FORMULARIO                     */
 /* ============================== */
 form {
     display: flex;
@@ -632,16 +580,13 @@ form {
 }
 
 form label {
-    /* No uses flex-basis: 100% aquí en escritorio si quieres que los labels se queden con su input */
-    /* Permite que los labels tomen el ancho necesario */
-    flex-basis: auto;
+    flex-basis: 100%;
     margin-bottom: -5px;
     font-weight: 500;
     color: #555;
-    /* Ajuste para que el label no salte de línea antes de su input en escritorio */
-    white-space: nowrap;
 }
 
+/* Asegura que los selects también tengan el color de texto correcto en modo oscuro */
 body.dark form label {
     color: #ccc;
 }
@@ -653,7 +598,7 @@ form select {
     font-size: 1rem;
     border: 1px solid var(--color-table-border);
     border-radius: 8px;
-    flex: 1 1 auto; /* Permite que los inputs y selects crezcan y se encojan */
+    flex: 1 1 auto;
     min-width: 150px;
     box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -668,28 +613,37 @@ form select:focus {
     box-shadow: 0 0 0 3px rgba(91, 95, 151, 0.2);
 }
 
+/* Mantenemos tu estilo original para los botones de formulario,
+    ya que las nuevas clases los sobrescribirán donde sea necesario */
+form button {
+    background-color: var(--color-accent); /* Mantiene tu color principal de acento */
+    color: white;
+}
+
+form button:hover {
+    background-color: var(--primary-hover-color); /* Usar variable para hover */
+}
 
 /* Media queries para los formularios (solo en móvil) */
 @media (max-width: 600px) {
     form {
-        flex-direction: column; /* Apila los campos del formulario */
-        gap: 1rem; /* Espaciado entre elementos apilados */
-        align-items: stretch; /* Estira los campos para ocupar el ancho */
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
     }
 
     form label {
-        margin-bottom: 0; /* Elimina el margen negativo si se apilan */
-        flex-basis: 100%; /* El label ocupa todo el ancho */
-        white-space: normal; /* Permite que el label se envuelva si es muy largo */
+        margin-bottom: 0;
     }
 
     form input,
     form select,
+    /* Asegura que los nuevos botones también tomen el 100% en móvil */
     form .boton-agregar,
     form .boton-eliminar {
-        width: 100%; /* Ocupa el 100% del ancho disponible */
-        flex: none; /* Deshabilita el flex-grow/shrink para control total del width */
-        min-width: unset; /* Reinicia el min-width */
+        width: 100%;
+        flex: none;
+        box-sizing: border-box;
     }
 }
 
@@ -702,10 +656,6 @@ form select:focus {
     gap: 0.6rem;
     font-size: 1rem;
     color: white;
-    /* En pantallas pequeñas, el clima se queda con el título, pero puede envolverse */
-    flex-wrap: wrap;
-    justify-content: center; /* Centrar en caso de que se envuelva */
-    text-align: center;
 }
 
 #weather img {
@@ -718,9 +668,9 @@ form select:focus {
 /* ============================== */
 
 /* Estilo base para los nuevos botones de "Agregar" y "Eliminar" */
+/* Estos estilos son más específicos y sobrescribirán a 'form button' donde aplique */
 .boton-agregar,
-.boton-eliminar,
-.boton-estetico { /* Añadido .boton-estetico aquí para consistencia */
+.boton-eliminar {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
@@ -729,8 +679,7 @@ form select:focus {
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: var(--button-shadow);
-    white-space: nowrap; /* Evita que el texto del botón se rompa */
-    flex-shrink: 0; /* Evita que los botones se encojan en formularios flex */
+    white-space: nowrap;
 }
 
 /* Estilo específico para botones de "Agregar" */
@@ -759,36 +708,41 @@ form select:focus {
 
 /* Efecto al hacer clic para todos los botones nuevos */
 .boton-agregar:active,
-.boton-eliminar:active,
-.boton-estetico:active {
+.boton-eliminar:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Tus estilos originales de .boton-estetico y .boton-principal */
+.boton-estetico,
+.boton-principal {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
 .boton-estetico {
-    background-color: var(--primary-color); /* Usar primary-color para los botones estéticos */
+    background-color: var(--color-danger); /* Este es el boton estetico que se usa en general en tu css, fuera del contexto de 'day-navigation' */
     color: white;
 }
 
 .boton-estetico:hover {
-    background-color: var(--primary-hover-color);
+    background-color: var(--color-danger-hover);
     transform: translateY(-2px);
     box-shadow: var(--button-shadow-hover);
 }
 
-/* .boton-principal no es usado en tu HTML, pero se mantiene para coherencia si lo usas en JS */
 .boton-principal {
     background-color: var(--color-accent);
     color: white;
-    padding: 10px 16px; /* Ajuste de padding si no lo tenías en la base */
-    border-radius: 8px;
-    box-shadow: var(--shadow-soft); /* Reutiliza sombra */
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 .boton-principal:hover {
-    background-color: var(--primary-hover-color);
+    background-color: var(--primary-hover-color); /* Usar variable para hover */
 }
 
 .boton-principal.eliminar {
@@ -799,106 +753,236 @@ form select:focus {
     background-color: var(--color-danger-hover);
 }
 
+.boton-principal:active,
+.boton-estetico:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 /* ============================== */
 /* NAVEGACIÓN DE DÍAS (SECCIÓN HOY)*/
 /* ============================== */
 
+/* Contenedor del título y la navegación de días */
 .header-with-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-    flex-wrap: wrap; /* Permite que el título y la navegación se envuelvan */
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 10px; /* Reducido el gap para compacidad */
 }
 
+/* Estilo para el h2 dentro de la sección Hoy para el título del día */
 #hoy .header-with-nav h2 {
-    font-size: 1.8rem;
+    font-size: 1.8rem; /* Tamaño más moderado */
     margin: 0;
-    font-weight: 600;
+    font-weight: 600; /* Peso de fuente intermedio */
     color: var(--color-text);
-    flex-grow: 1; /* Permite que el título crezca */
-    white-space: nowrap; /* Evita que el título se rompa */
 }
 
+/* Estilo para el contenedor de la navegación (botones y fecha) */
 .day-navigation {
     display: flex;
     align-items: center;
-    gap: 8px; /* Espacio entre botones y display de día */
-    flex-shrink: 0; /* Evita que la navegación se encoja demasiado */
+    gap: 8px; /* Espaciado más sutil entre elementos de navegación */
 }
 
-.day-navigation #currentDayDisplay {
-    font-weight: bold;
-    font-size: 1.1rem;
-    white-space: nowrap; /* Asegura que la fecha no se rompa */
-}
-
+/* Estilo para los botones de navegación de días (Izquierda y Derecha) */
 .day-navigation .boton-estetico {
-    /* Aquí se utilizan los estilos generales de .boton-estetico,
-       que ahora deberían ser violetas. Si quieres que estos botones
-       sean de otro color (e.g., gris), sobrescríbelos aquí. */
-    background-color: var(--primary-color); /* Asegura que sean violetas */
-    color: white;
-    padding: 8px 12px; /* Un poco menos de padding para que quepan bien */
-    font-size: 0.9rem; /* Un poco más pequeño */
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 50%;
+    width: 36px; /* Tamaño de botón más pequeño */
+    height: 36px; /* Tamaño de botón más pequeño */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: var(--button-shadow); /* Mantenemos la sombra para profundidad */
+    padding: 0;
 }
+
+.day-navigation .boton-estetico i {
+    font-size: 1.3rem; /* Tamaño del ícono ajustado al botón */
+}
+
 
 .day-navigation .boton-estetico:hover {
     background-color: var(--primary-hover-color);
+    transform: translateY(-1px); /* Menos desplazamiento en hover */
+    box-shadow: var(--button-shadow-hover);
 }
 
-/* Media query para la navegación de días en móviles */
-@media (max-width: 600px) {
-    .header-with-nav {
-        flex-direction: column; /* Apila el título y la navegación */
-        align-items: center;
-        text-align: center;
-    }
+.day-navigation .boton-estetico:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra más sutil al hacer clic */
+}
 
-    #hoy .header-with-nav h2 {
-        font-size: 1.5rem; /* Ajuste más pequeño para el título */
-        margin-bottom: 10px;
-        width: 100%;
-        white-space: normal; /* Permite que el título se envuelva si es muy largo */
+/* Estilo para el display del día actual */
+#currentDayDisplay {
+    font-size: 1.3rem; /* Tamaño más moderado */
+    font-weight: 500; /* Peso de fuente más ligero */
+    color: var(--color-text);
+    white-space: nowrap; /* Evita que la fecha se rompa */
+}
+
+body.dark #currentDayDisplay {
+    color: var(--color-text);
+}
+
+
+/* Estilo para el mensaje de "no hay tareas" */
+.no-tasks {
+    font-style: italic;
+    color: #777;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+body.dark .no-tasks {
+    color: #bbb;
+}
+
+
+/* Media query para la navegación de días en pantallas pequeñas */
+@media (max-width: 768px) {
+    .header-with-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        gap: 8px; /* Ajuste del gap en móvil */
     }
 
     .day-navigation {
-        width: 100%; /* La navegación ocupa todo el ancho */
-        justify-content: space-between; /* Espacio entre los elementos de la navegación */
-        font-size: 0.95rem; /* Ajuste de tamaño de fuente */
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 8px;
+        gap: 6px; /* Ajuste del gap en móvil */
     }
 
-    .day-navigation #currentDayDisplay {
-        font-size: 1rem; /* Ajusta el tamaño de la fecha */
+    .day-navigation .boton-estetico {
+        width: 34px; /* Un poco más pequeño en móvil */
+        height: 34px; /* Un poco más pequeño en móvil */
+        font-size: 1.2rem; /* Ajuste del ícono en móvil */
+    }
+
+    #currentDayDisplay {
+        font-size: 1.1rem; /* Ajuste para móvil */
+        text-align: center;
+        flex-grow: 1;
     }
 }
+
 
 /* ============================== */
 /* ANIMACIONES                    */
 /* ============================== */
-@keyframes fadeInBody {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 @keyframes fadeSlideIn {
-    from {
+    0% {
         opacity: 0;
         transform: translateY(20px);
     }
-    to {
+    100% {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
+@keyframes fadeInBody {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ============================== */
+/* HEADER RIGHT                   */
+/* ============================== */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* ============================== */
+/* BOTÓN DE TEMA                  */
+/* ============================== */
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#theme-toggle:hover {
+    transform: rotate(20deg);
+}
+
+#theme-icon {
+    color: #ffcc00;
+    transition: color 0.4s ease;
+}
+
+
 /* ============================== */
 /* TOOLTIP                        */
 /* ============================== */
 #tooltip {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.85);
+    position: fixed;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    z-index: 2000;
+    max-width: 260px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+body.dark #tooltip {
+    background-color: #222;
+    color: #eee;
+}
+
+/* ============================== */
+/* TOOLTIP FLOATANTE              */
+/* ============================== */
+.tooltip {
+    position: fixed;
+    z-index: 9999;
+    padding: 8px 12px;
+    background-color: rgba(60, 60, 60, 0.95);
     color: white;
-    padding: 8px
+    font-size: 0.9rem;
+    border-radius: 6px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    max-width: 220px;
+    white-space: pre-line;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================================== */
+/* MODIFICACIONES PARA MODO OSCURO (Nuevas reglas) */
+/* ==================================== */
+
+/* Sobrescribir el color de los botones de navegación para el MODO OSCURO */
+body.dark .day-navigation .boton-estetico {
+    background-color: var(--color-header); /* Usa el color del header en modo oscuro */
+}
+
+body.dark .day-navigation .boton-estetico:hover {
+    background-color: #555555; /* Un tono un poco más claro para el hover en el color del header en modo oscuro */
+}
