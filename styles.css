@@ -469,7 +469,7 @@ nav .menu-toggle {
 .geografia .hoy-materia, .hoy-item.geografia { color: var(--geografia-color); }
 .arte .hoy-materia, .hoy-item.arte { color: var(--arte-color); }
 .proyecto .hoy-materia, .hoy-item.proyecto { color: var(--proyecto-color); }
-.trabajo-y-ciudadania .hoy-materia, .hoy-item.trabajo-y-ciudadania { color: var(--trabajo-ciudadania-color); }
+.trabajo-y-ciudadania .hoy-materia, .hoy-item.trabajo y ciudadania { color: var(--trabajo-ciudadania-color); }
 .catequesis .hoy-materia, .hoy-item.catequesis { color: var(--catequesis-color); }
 .general .hoy-materia, .hoy-item.general { color: var(--general-color); }
 
