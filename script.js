@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
     const MAX_TAREA_LENGTH = 100;
-    const API_KEY_WEATHER = '671f6a470eba37e2e650177a9d2e16cf'; // Tu API Key
+    // ¡IMPORTANTE! Reemplaza 'TU_API_KEY_AQUI' con tu clave real de OpenWeatherMap
+    const API_KEY_WEATHER = '671f6a470eba37e2e650177a9d2e16cf'; 
 
     // Función para normalizar strings (quita acentos, convierte a minúsculas, trim)
     const normalizarString = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
@@ -20,25 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const weatherDiv = document.getElementById('weather');
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
-    const tooltip = document.getElementById('tooltip');
+    const tooltip = document.getElementById('tooltip'); // Tooltip general del header
     const mainHeaderTitle = document.querySelector('header.main-header h1');
 
     // Tareas
     const formTarea = document.getElementById('formTarea');
     const listaTareas = document.getElementById('listaTareas');
     const btnEliminarTareas = document.getElementById('btnEliminarTareas');
-    let tareasGuardadas = JSON.parse(localStorage.getItem('tareas')) || [];
+    let tareasGuardadas = []; // Se cargan con loadData al inicio
 
     // Notas
     const formNota = document.getElementById('formNota');
     const listaNotas = document.getElementById('listaNotas');
     const btnEliminarNotas = document.getElementById('btnEliminarNotas');
-    let notasGuardadas = JSON.parse(localStorage.getItem('notas')) || [];
+    let notasGuardadas = []; // Se cargan con loadData al inicio
 
     // Exámenes
     const formExamen = document.getElementById('formExamen');
     const listaExamenes = document.getElementById('listaExamenes');
-    let examenesGuardados = JSON.parse(localStorage.getItem('examenes')) || [];
+    let examenesGuardados = []; // Se cargan con loadData y se filtran al inicio
 
     // Hoy
     let currentDisplayedDate = new Date();
@@ -84,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Cierra el menú cuando la ventana cambia de tamaño (de móvil a escritorio, por ejemplo)
-        // Esto evita que el menú quede abierto si el usuario rota el dispositivo o redimensiona la ventana
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768 && menuList.classList.contains('show')) { // Ajusta 768px a tu breakpoint de CSS
                 menuList.classList.remove('show');
@@ -130,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span id="temperature">${temp}°C</span>
                 <span id="weather-description" class="sr-only">${description.charAt(0).toUpperCase() + description.slice(1)}</span>
             `;
-            // Agregado sr-only para descripción para mejorar accesibilidad sin ocupar espacio visual extra
         } catch (error) {
             console.error("Error fetching weather:", error);
             if (weatherDiv) {
@@ -147,8 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- PERSISTENCIA DE DATOS (Centralizada y genérica) ---
     const saveData = (key, data) => {
         localStorage.setItem(key, JSON.stringify(data));
-        // Llama a loadTasksForDay después de cada guardado para mantener la sección "Hoy" actualizada
-        loadTasksForDay(currentDisplayedDate);
+        // Recargar la sección "Hoy" solo si es pertinente (no en cada pequeña actualización de datos)
+        // La sección "Hoy" se actualizará al cargarExamenes, cargarNotas, cargarTareas.
+        if (key === 'tareas' || key === 'notas' || key === 'examenes') {
+            loadTasksForDay(currentDisplayedDate);
+        }
     };
 
     const loadData = (key) => {
@@ -159,15 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const crearNotaElemento = (materia, texto, fecha, marcada = false) => {
         const li = document.createElement('li');
         li.dataset.materia = materia;
+        li.dataset.fecha = fecha; // Almacenar la fecha original YYYY-MM-DD
+        const uniqueId = generarId(); // Generar ID único para cada checkbox y label
         li.innerHTML = `
-            <input type="checkbox" id="nota-${generarId()}" ${marcada ? 'checked' : ''}>
-            <label for="nota-${generarId()}">
+            <input type="checkbox" id="nota-${uniqueId}" ${marcada ? 'checked' : ''}>
+            <label for="nota-${uniqueId}">
                 <span class="nota-materia">${materia.charAt(0).toUpperCase() + materia.slice(1)}:</span>
                 <span class="nota-texto">${texto}</span>
                 ${fecha ? `<span class="nota-fecha"> (${new Date(fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })})</span>` : ''}
             </label>
         `;
-        // Agregado span.nota-materia y .nota-texto para mejor segmentación en CSS
         return li;
     };
 
@@ -182,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 listaNotas.appendChild(crearNotaElemento(materia, texto, fecha, marcada));
             });
         }
+        loadTasksForDay(currentDisplayedDate); // Actualizar sección "Hoy" después de cargar
     };
 
     formNota?.addEventListener('submit', e => {
@@ -195,10 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Eliminar el mensaje "No hay notas" si existe
-        const noItemsMessage = listaNotas.querySelector('.no-items');
-        if (noItemsMessage) noItemsMessage.remove();
-
         notasGuardadas.push({ materia, texto, fecha, marcada: false });
         saveData('notas', notasGuardadas);
         cargarNotas(); // Volver a cargar para reflejar el estado actual
@@ -207,16 +207,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnEliminarNotas?.addEventListener('click', () => {
         if (!listaNotas) return;
-        const checkedNotes = Array.from(listaNotas.querySelectorAll('input:checked'));
-        if (checkedNotes.length === 0) {
+        const itemsToDelete = Array.from(listaNotas.querySelectorAll('input:checked'));
+        if (itemsToDelete.length === 0) {
             alert('No hay notas seleccionadas para eliminar.');
             return;
         }
         
-        // Filtrar las notas marcadas para eliminarlas del array guardado
-        notasGuardadas = notasGuardadas.filter((nota, index) => {
-            // Encuentra el índice de la nota en la lista visual para ver si su checkbox está marcado
-            const correspondingLi = listaNotas.children[index];
+        // Filtra las notas del array guardado que no estén marcadas en la UI
+        notasGuardadas = notasGuardadas.filter((nota) => {
+            // Encuentra el li correspondiente a esta nota guardada
+            const correspondingLi = Array.from(listaNotas.children).find(li => {
+                const label = li.querySelector('label');
+                const materiaText = li.dataset.materia;
+                const noteText = label ? label.querySelector('.nota-texto')?.textContent : '';
+                const noteDate = li.dataset.fecha;
+
+                // Comparación más robusta
+                return normalizarString(materiaText) === normalizarString(nota.materia) &&
+                       normalizarString(noteText) === normalizarString(nota.texto) &&
+                       (noteDate === nota.fecha);
+            });
+            // Si el li existe y su checkbox NO está marcado, entonces mantenlo
             return correspondingLi ? !correspondingLi.querySelector('input')?.checked : true;
         });
 
@@ -227,21 +238,33 @@ document.addEventListener('DOMContentLoaded', () => {
     listaNotas?.addEventListener('change', (e) => {
         if (e.target.tagName === 'INPUT' && e.target.type === 'checkbox') {
             const listItem = e.target.closest('li');
-            const index = Array.from(listaNotas.children).indexOf(listItem);
-            if (index > -1) {
-                notasGuardadas[index].marcada = e.target.checked;
+            const labelElement = listItem.querySelector('label');
+            const materiaText = listItem.dataset.materia;
+            const noteText = labelElement ? labelElement.querySelector('.nota-texto')?.textContent : '';
+            const noteDate = listItem.dataset.fecha;
+
+            // Encuentra la nota específica en el array basándose en el contenido o data-set
+            const notaIndex = notasGuardadas.findIndex(nota =>
+                normalizarString(nota.materia) === normalizarString(materiaText) &&
+                normalizarString(nota.texto) === normalizarString(noteText) &&
+                nota.fecha === noteDate
+            );
+
+            if (notaIndex > -1) {
+                notasGuardadas[notaIndex].marcada = e.target.checked;
                 saveData('notas', notasGuardadas);
             }
         }
     });
 
-    cargarNotas();
+    cargarNotas(); // Cargar notas al inicio
 
     // --- TAREAS ---
-    const crearTareaElemento = (materia, texto, id = generarId(), completada = false) => {
+    const crearTareaElemento = (materia, texto, id, completada = false) => {
         const li = document.createElement('li');
         li.dataset.materia = materia;
-        li.setAttribute('role', 'listitem'); // Añadido rol para accesibilidad
+        li.dataset.id = id; // Almacena el ID único para referencia
+        li.setAttribute('role', 'listitem');
         li.innerHTML = `
             <input type="checkbox" id="${id}" ${completada ? 'checked' : ''} aria-label="Marcar tarea como completada">
             <label for="${id}" class="${completada ? 'completed' : ''}">
@@ -249,8 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="tarea-texto">${texto}</span>
             </label>
         `;
-        // Clases específicas para materia y texto, y aria-label para accesibilidad.
-        // `sr-only` para "General" si no queremos que ocupe espacio visual.
         return li;
     };
 
@@ -260,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tareasGuardadas = loadData('tareas'); // Asegura que carga lo último
         if (tareasGuardadas.length === 0) {
             const noTasksMessage = document.createElement('li');
-            noTasksMessage.classList.add('no-items'); // Clase genérica
+            noTasksMessage.classList.add('no-items');
             noTasksMessage.textContent = 'No hay tareas pendientes.';
             listaTareas.appendChild(noTasksMessage);
         } else {
@@ -268,6 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 listaTareas.appendChild(crearTareaElemento(materia, texto, id, completada));
             });
         }
+        loadTasksForDay(currentDisplayedDate); // Actualizar sección "Hoy" después de cargar
     };
 
     formTarea?.addEventListener('submit', e => {
@@ -280,10 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Eliminar el mensaje "No hay tareas" si existe
-        const noItemsMessage = listaTareas.querySelector('.no-items');
-        if (noItemsMessage) noItemsMessage.remove();
-
         const nuevaTarea = { id: generarId(), materia, texto, completada: false };
         tareasGuardadas.push(nuevaTarea);
         saveData('tareas', tareasGuardadas);
@@ -293,16 +311,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnEliminarTareas?.addEventListener('click', () => {
         if (!listaTareas) return;
-        const checkedTasks = Array.from(listaTareas.querySelectorAll('input:checked'));
-        if (checkedTasks.length === 0) {
+        const itemsToDelete = Array.from(listaTareas.querySelectorAll('input:checked'));
+        if (itemsToDelete.length === 0) {
             alert('No hay tareas completadas para eliminar.');
             return;
         }
         
-        // Filtra las tareas que NO están marcadas para mantenerlas
         tareasGuardadas = tareasGuardadas.filter(tarea => {
-            const correspondingLi = listaTareas.querySelector(`input[id="${tarea.id}"]`);
-            return correspondingLi ? !correspondingLi.checked : true;
+            // Busca si el ID de la tarea guardada existe en los checkboxes marcados
+            return !itemsToDelete.some(checkbox => checkbox.id === tarea.id);
         });
 
         saveData('tareas', tareasGuardadas);
@@ -349,7 +366,21 @@ document.addEventListener('DOMContentLoaded', () => {
         listaExamenes.innerHTML = '';
         examenesGuardados = loadData('examenes'); // Asegura que carga lo último
 
-        // Ordenar exámenes por fecha ascendente
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Establecer la hora a medianoche para comparar solo la fecha
+
+        // Filtrar exámenes: mantener solo aquellos cuya fecha es hoy o en el futuro
+        const filteredExamenes = examenesGuardados.filter(examen => {
+            const examenDate = new Date(examen.fecha);
+            examenDate.setHours(0, 0, 0, 0); // Establecer la hora a medianoche
+            return examenDate >= today;
+        });
+
+        // Actualizar la variable global y localStorage con los exámenes filtrados
+        examenesGuardados = filteredExamenes;
+        saveData('examenes', examenesGuardados); // Guarda la lista filtrada de nuevo en localStorage
+
+        // Ordenar exámenes por fecha ascendente para mostrarlos correctamente
         examenesGuardados.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
 
         if (examenesGuardados.length === 0) {
@@ -359,6 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 listaExamenes.appendChild(crearExamenElemento(materia, texto, fecha));
             });
         }
+        loadTasksForDay(currentDisplayedDate); // Actualizar sección "Hoy" después de cargar
     };
 
     formExamen?.addEventListener('submit', e => {
@@ -372,9 +404,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Eliminar el mensaje "No hay exámenes" si existe
-        const noItemsMessage = listaExamenes.querySelector('.no-items');
-        if (noItemsMessage) noItemsMessage.remove();
+        const newExamenDate = new Date(fecha);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+
+        if (newExamenDate < today) {
+            alert('No puedes agregar un examen con una fecha pasada.');
+            return;
+        }
 
         examenesGuardados.push({ materia, texto, fecha });
         saveData('examenes', examenesGuardados);
@@ -382,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formExamen.reset();
     });
 
-    cargarExamenes();
+    cargarExamenes(); // Cargar y filtrar exámenes al inicio de la aplicación
 
     // --- NAVEGACIÓN DE DÍAS (PARA SECCIÓN HOY) ---
 
@@ -410,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (dayColumnIndex === -1) {
             // Esto puede pasar si el horario no cubre todos los días de la semana (ej: solo L-V)
-            console.log(`No se encontró la columna para el día: ${currentDayNameRaw} en el horario.`);
+            // console.log(`No se encontró la columna para el día: ${currentDayNameRaw} en el horario.`);
             return [];
         }
 
@@ -447,6 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const materiasDelDia = getMateriasDelDia(date);
         const hoyStr = date.toISOString().split('T')[0]; // Formato YYYY-MM-DD para comparación de fechas
+        const todayAtMidnight = new Date(hoyStr); // Objeto Date para el día actual sin tiempo
 
         let itemsFound = false;
 
@@ -458,7 +496,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Si la tarea no está completada y corresponde a una materia del día o es general
             if (!item.completada && isMateriaForToday) {
                 const listItem = document.createElement('li');
-                // Formato mejorado para la tarea en "Hoy"
                 const materiaDisplay = item.materia === 'general' ? 'General' : item.materia.charAt(0).toUpperCase() + item.materia.slice(1);
                 listItem.textContent = `${materiaDisplay}: Tarea - ${item.texto}`;
                 listaHoyElement.appendChild(listItem);
@@ -466,13 +503,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Notas para "Hoy" (solo si tienen fecha y coincide con el día)
+        // Notas para "Hoy"
         notasGuardadas.forEach(item => {
             const itemMateriaNormalized = normalizarString(item.materia || '');
             const isMateriaForToday = materiasDelDia.includes(itemMateriaNormalized) || itemMateriaNormalized === 'general';
-            const isDateForToday = item.fecha && item.fecha === hoyStr;
+            const noteDate = item.fecha ? new Date(item.fecha) : null;
+            if (noteDate) noteDate.setHours(0,0,0,0); // Normalizar a medianoche
 
-            if (!item.marcada && (isMateriaForToday || isDateForToday)) {
+            // Mostrar si no está marcada y (su materia es del día O tiene fecha y es HOY)
+            if (!item.marcada && (isMateriaForToday || (noteDate && noteDate.toDateString() === todayAtMidnight.toDateString()))) {
                 const listItem = document.createElement('li');
                 const materiaDisplay = item.materia === 'general' ? 'General' : item.materia.charAt(0).toUpperCase() + item.materia.slice(1);
                 const fechaTexto = item.fecha ? ` (Fecha: ${new Date(item.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })})` : '';
@@ -482,13 +521,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Exámenes para "Hoy" (solo si tienen fecha y coincide con el día)
+        // Exámenes para "Hoy" (solo si su fecha es hoy o en el futuro)
         examenesGuardados.forEach(item => {
             const itemMateriaNormalized = normalizarString(item.materia || '');
             const isMateriaForToday = materiasDelDia.includes(itemMateriaNormalized);
-            const isDateForToday = item.fecha && item.fecha === hoyStr;
+            const examDate = new Date(item.fecha);
+            examDate.setHours(0,0,0,0); // Normalizar a medianoche
 
-            if (isMateriaForToday || isDateForToday) { // Los exámenes no tienen estado "completado"
+            // Solo muestra exámenes que no han pasado (ya se filtraron, pero doble chequeo)
+            // Y que su fecha es el día que estamos viendo en la sección "Hoy" O su materia es del día actual
+            if (examDate >= todayAtMidnight && (isMateriaForToday || examDate.toDateString() === todayAtMidnight.toDateString())) { 
                 const listItem = document.createElement('li');
                 const materiaDisplay = item.materia.charAt(0).toUpperCase() + item.materia.slice(1);
                 const fechaTexto = ` (Fecha: ${new Date(item.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })})`;
@@ -588,51 +630,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
         celdasHorario.forEach(celda => {
             let tooltipDiv = null; // Usar una variable local para cada celda
+            let enterTimeout; // Temporizador para mouseenter
 
             celda.addEventListener('mouseenter', (event) => {
-                const materiaTexto = celda.dataset.materia || celda.textContent.trim();
-                if (!materiaTexto || normalizarString(materiaTexto) === 'recreo' || normalizarString(materiaTexto) === 'libre' || materiaTexto.trim() === "") {
-                    return;
-                }
+                clearTimeout(enterTimeout); // Limpiar cualquier timeout anterior
 
-                const materiaNorm = normalizarString(materiaTexto);
-                const tareasMateria = tareasGuardadas.filter(t =>
-                    normalizarString(t.materia) === materiaNorm && !t.completada
-                );
+                enterTimeout = setTimeout(() => { // Retraso para mostrar el tooltip
+                    const materiaTexto = celda.dataset.materia || celda.textContent.trim();
+                    if (!materiaTexto || normalizarString(materiaTexto) === 'recreo' || normalizarString(materiaTexto) === 'libre' || materiaTexto.trim() === "") {
+                        return;
+                    }
 
-                tooltipDiv = document.createElement('div');
-                tooltipDiv.className = 'tooltip show';
+                    const materiaNorm = normalizarString(materiaTexto);
+                    // Filtrar tareas, notas y exámenes por la materia de la celda y que no estén completadas
+                    const itemsPendientes = [];
 
-                if (tareasMateria.length > 0) {
-                    tooltipDiv.innerHTML = `<strong>${tareasMateria.length === 1 ? 'Tarea pendiente:' : 'Tareas pendientes:'}</strong><br>${tareasMateria.map(t => `• ${t.texto}`).join('<br>')}`;
-                } else {
-                    tooltipDiv.innerHTML = `<em>No se registran tareas pendientes para esta materia.</em>`;
-                }
+                    // Tareas no completadas
+                    tareasGuardadas.filter(t => normalizarString(t.materia) === materiaNorm && !t.completada)
+                                   .forEach(t => itemsPendientes.push(`Tarea: ${t.texto}`));
 
-                document.body.appendChild(tooltipDiv);
+                    // Notas no marcadas
+                    notasGuardadas.filter(n => normalizarString(n.materia) === materiaNorm && !n.marcada)
+                                  .forEach(n => itemsPendientes.push(`Nota: ${n.texto} ${n.fecha ? `(Fecha: ${new Date(n.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })})` : ''}`));
 
-                // Posicionamiento dinámico del tooltip
-                const rect = celda.getBoundingClientRect();
-                tooltipDiv.style.position = 'absolute';
-                tooltipDiv.style.zIndex = '2000';
+                    // Exámenes no pasados (ya filtrados en examenesGuardados, solo verificar la materia)
+                    examenesGuardados.filter(ex => normalizarString(ex.materia) === materiaNorm)
+                                     .forEach(ex => itemsPendientes.push(`Examen: ${ex.texto} (Fecha: ${new Date(ex.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })})`));
 
-                let top = rect.top + window.scrollY - tooltipDiv.offsetHeight - 8;
-                let left = rect.left + window.scrollX + (rect.width - tooltipDiv.offsetWidth) / 2;
+                    tooltipDiv = document.createElement('div');
+                    tooltipDiv.className = 'tooltip'; // No 'show' inicialmente, se añade después de posicionar
 
-                // Ajustes para que el tooltip no se salga de la pantalla
-                if (left < 0) { left = 5; }
-                if (left + tooltipDiv.offsetWidth > window.innerWidth) {
-                    left = window.innerWidth - tooltipDiv.offsetWidth - 5;
-                }
-                if (top < 0) { // Si no hay espacio arriba, posicionar abajo
-                    top = rect.bottom + window.scrollY + 8;
-                }
+                    if (itemsPendientes.length > 0) {
+                        tooltipDiv.innerHTML = `<strong>${itemsPendientes.length === 1 ? 'Elemento pendiente:' : 'Elementos pendientes:'}</strong><br>${itemsPendientes.join('<br>')}`;
+                    } else {
+                        tooltipDiv.innerHTML = `<em>No se registran elementos pendientes para esta materia.</em>`;
+                    }
 
-                tooltipDiv.style.top = `${top}px`;
-                tooltipDiv.style.left = `${left}px`;
+                    document.body.appendChild(tooltipDiv);
+
+                    // Posicionamiento dinámico del tooltip
+                    const rect = celda.getBoundingClientRect();
+                    tooltipDiv.style.position = 'absolute';
+                    tooltipDiv.style.zIndex = '2000';
+
+                    let top = rect.top + window.scrollY - tooltipDiv.offsetHeight - 8;
+                    let left = rect.left + window.scrollX + (rect.width - tooltipDiv.offsetWidth) / 2;
+
+                    // Ajustes para que el tooltip no se salga de la pantalla
+                    if (left < 0) { left = 5; }
+                    if (left + tooltipDiv.offsetWidth > window.innerWidth) {
+                        left = window.innerWidth - tooltipDiv.offsetWidth - 5;
+                    }
+                    if (top < 0) { // Si no hay espacio arriba, posicionar abajo
+                        top = rect.bottom + window.scrollY + 8;
+                    }
+
+                    tooltipDiv.style.top = `${top}px`;
+                    tooltipDiv.style.left = `${left}px`;
+                    tooltipDiv.classList.add('show'); // Ahora sí, mostrarlo
+                }, 500); // 500ms de retraso
             });
 
             celda.addEventListener('mouseleave', () => {
+                clearTimeout(enterTimeout); // Limpiar el timeout si el mouse se va antes de que aparezca
                 if (tooltipDiv) {
                     tooltipDiv.classList.remove('show');
                     // Retraso para que la transición CSS de fade-out sea visible
@@ -653,74 +713,95 @@ document.addEventListener('DOMContentLoaded', () => {
         const filas = Array.from(tabla.querySelectorAll('tbody tr'));
 
         allThs.forEach((thElement, colIndex) => {
-            if (!thElement.textContent.trim() || colIndex >= dayNames.length) { // Asegura que el TH es un día de la semana
+            // Ignorar la primera columna (Hora) y columnas sin texto o fuera del rango de días
+            if (colIndex === 0 || !thElement.textContent.trim() || colIndex > dayNames.length) { 
                 return;
             }
 
             let tooltipDiv = null;
+            let enterTimeout; // Temporizador para mouseenter
 
             thElement.addEventListener('mouseenter', () => {
-                const dayOfWeekNormalized = normalizarString(thElement.textContent);
-                
-                // Obtener todas las materias asociadas a este día (columna) en el horario
-                const materiasDeColumna = filas
-                    .map(fila => fila.children[colIndex]?.dataset.materia || fila.children[colIndex]?.textContent?.trim())
-                    .filter(Boolean)
-                    .map(m => normalizarString(m))
-                    .filter(m => m !== 'recreo' && m !== 'libre' && m.trim() !== '');
+                clearTimeout(enterTimeout);
 
-                // Filtrar tareas que corresponden a estas materias o son "general"
-                const tareasPendientesDia = tareasGuardadas.filter(t =>
-                    (materiasDeColumna.includes(normalizarString(t.materia)) || normalizarString(t.materia) === 'general') && !t.completada
-                );
-                
-                // Filtrar exámenes que corresponden a estas materias
-                const examenesPendientesDia = examenesGuardados.filter(e =>
-                    materiasDeColumna.includes(normalizarString(e.materia))
-                );
+                enterTimeout = setTimeout(() => {
+                    const dayNameForColumn = normalizarString(thElement.textContent);
+                    
+                    // Obtener todas las materias asociadas a este día (columna) en el horario
+                    const materiasDeColumna = new Set();
+                    filas.forEach(fila => {
+                        const cell = fila.children[colIndex];
+                        if (cell) {
+                            const materia = cell.dataset.materia || cell.textContent?.trim();
+                            if (materia && normalizarString(materia) !== 'recreo' && normalizarString(materia) !== 'libre' && materia.trim() !== '') {
+                                materiasDeColumna.add(normalizarString(materia));
+                            }
+                        }
+                    });
 
-                if (tareasPendientesDia.length === 0 && examenesPendientesDia.length === 0) return;
+                    // Si no hay materias para este día en el horario, no mostrar tooltip
+                    if (materiasDeColumna.size === 0) return;
 
-                tooltipDiv = document.createElement('div');
-                tooltipDiv.className = 'tooltip show';
-                let tooltipContent = '';
-
-                if (tareasPendientesDia.length > 0) {
-                    tooltipContent += `<strong>${tareasPendientesDia.length === 1 ? 'Tarea pendiente:' : 'Tareas pendientes:'}</strong><br>${tareasPendientesDia.map(t => {
+                    const itemsPendientesDia = [];
+                    
+                    // Tareas pendientes para las materias de este día o tareas generales
+                    tareasGuardadas.filter(t => 
+                        (materiasDeColumna.has(normalizarString(t.materia)) || normalizarString(t.materia) === 'general') && !t.completada
+                    ).forEach(t => {
                         const materiaDisplay = t.materia === 'general' ? 'General' : t.materia.charAt(0).toUpperCase() + t.materia.slice(1);
-                        return `• ${materiaDisplay}: ${t.texto}`;
-                    }).join('<br>')}`;
-                }
-                if (examenesPendientesDia.length > 0) {
-                    if (tooltipContent) tooltipContent += '<br><br>'; // Separador si hay tareas
-                    tooltipContent += `<strong>${examenesPendientesDia.length === 1 ? 'Examen programado:' : 'Exámenes programados:'}</strong><br>${examenesPendientesDia.map(e => {
-                        const materiaDisplay = e.materia.charAt(0).toUpperCase() + e.materia.slice(1);
-                        const displayDate = new Date(e.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                        return `• ${materiaDisplay}: ${e.texto} (Fecha: ${displayDate})`;
-                    }).join('<br>')}`;
-                }
-                
-                tooltipDiv.innerHTML = tooltipContent;
-                document.body.appendChild(tooltipDiv);
+                        itemsPendientesDia.push(`Tarea: ${t.texto} (${materiaDisplay})`);
+                    });
+                    
+                    // Notas pendientes para las materias de este día o notas generales
+                    notasGuardadas.filter(n =>
+                        (materiasDeColumna.has(normalizarString(n.materia)) || normalizarString(n.materia) === 'general') && !n.marcada
+                    ).forEach(n => {
+                        const materiaDisplay = n.materia === 'general' ? 'General' : n.materia.charAt(0).toUpperCase() + n.materia.slice(1);
+                        const fechaTexto = n.fecha ? ` (Fecha: ${new Date(n.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })})` : '';
+                        itemsPendientesDia.push(`Nota: ${n.texto} (${materiaDisplay})${fechaTexto}`);
+                    });
 
-                // Posicionamiento dinámico del tooltip (similar al anterior)
-                const rect = thElement.getBoundingClientRect();
-                tooltipDiv.style.position = 'absolute';
-                tooltipDiv.style.zIndex = '2000';
+                    // Exámenes pendientes para las materias de este día (ya auto-eliminados si pasaron)
+                    examenesGuardados.filter(ex =>
+                        materiasDeColumna.has(normalizarString(ex.materia))
+                    ).forEach(ex => {
+                        const materiaDisplay = ex.materia.charAt(0).toUpperCase() + ex.materia.slice(1);
+                        const fechaTexto = ` (Fecha: ${new Date(ex.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' })})`;
+                        itemsPendientesDia.push(`Examen: ${ex.texto} (${materiaDisplay})${fechaTexto}`);
+                    });
 
-                let top = rect.bottom + window.scrollY + 8;
-                let left = rect.left + window.scrollX + (rect.width - tooltipDiv.offsetWidth) / 2;
+                    tooltipDiv = document.createElement('div');
+                    tooltipDiv.className = 'tooltip';
 
-                if (left < 0) { left = 5; }
-                if (left + tooltipDiv.offsetWidth > window.innerWidth) {
-                    left = window.innerWidth - tooltipDiv.offsetWidth - 5;
-                }
+                    if (itemsPendientesDia.length > 0) {
+                        tooltipDiv.innerHTML = `<strong>Elementos pendientes para ${thElement.textContent.trim()}:</strong><br>${itemsPendientesDia.join('<br>')}`;
+                    } else {
+                        tooltipDiv.innerHTML = `<em>No hay elementos pendientes para ${thElement.textContent.trim()}.</em>`;
+                    }
 
-                tooltipDiv.style.top = `${top}px`;
-                tooltipDiv.style.left = `${left}px`;
+                    document.body.appendChild(tooltipDiv);
+
+                    const rect = thElement.getBoundingClientRect();
+                    tooltipDiv.style.position = 'absolute';
+                    tooltipDiv.style.zIndex = '2000';
+
+                    let top = rect.bottom + window.scrollY + 8;
+                    let left = rect.left + window.scrollX + (rect.width - tooltipDiv.offsetWidth) / 2;
+
+                    // Ajustes para que no se salga de la pantalla
+                    if (left < 0) { left = 5; }
+                    if (left + tooltipDiv.offsetWidth > window.innerWidth) {
+                        left = window.innerWidth - tooltipDiv.offsetWidth - 5;
+                    }
+
+                    tooltipDiv.style.top = `${top}px`;
+                    tooltipDiv.style.left = `${left}px`;
+                    tooltipDiv.classList.add('show');
+                }, 500); // 500ms de retraso
             });
 
             thElement.addEventListener('mouseleave', () => {
+                clearTimeout(enterTimeout);
                 if (tooltipDiv) {
                     tooltipDiv.classList.remove('show');
                     setTimeout(() => tooltipDiv?.remove(), 300);
@@ -730,6 +811,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    inicializarTooltipsDiasHorario(); // Llamar al iniciar
+    inicializarTooltipsDiasHorario(); // Inicializar tooltips en los encabezados de los días
 
+    // --- Inicializar inputs de fecha con la fecha actual ---
+    const initializeDateInput = (id) => {
+        const input = document.getElementById(id);
+        if (input) {
+            const today = new Date();
+            input.value = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        }
+    };
+
+    initializeDateInput('fechaNota');
+    initializeDateInput('fechaExamen');
+    // Si tienes un input de fecha para tareas, descomenta la siguiente línea:
+    // initializeDateInput('fechaTarea'); 
 });
